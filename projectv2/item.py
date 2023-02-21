@@ -1,4 +1,5 @@
 from projectv2.base import Base
+from projectv2.field import Field
 from projectv2.label import Label
 from projectv2.user import User
 
@@ -162,9 +163,20 @@ class Item(Base):
         :param field: The Field object
         """
 
+        # See if found is not a type of Field
+        if not isinstance(field, Field):
+            # Find the field
+            fields = project.get_fields()
+            for f in fields:
+                if f.name == field:
+                    field = f
+
+        # Make sure we found the field
+        if field is None:
+            raise Exception("Could not find field: %s" % field)
+
         fieldId = field.id
         projectId = project.id
-
         query = """
         mutation {
             clearProjectV2ItemFieldValue(input: {itemId: "%s", fieldId: "%s", projectId:"%s"}) {

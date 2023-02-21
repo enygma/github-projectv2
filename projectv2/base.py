@@ -8,7 +8,7 @@ headers = {"Authorization": "bearer %s" % os.getenv("GITHUB_API_TOKEN")}
 
 
 class Base:
-    def __init__(self):
+    def __init__(self, request=None):
         self.request = None
 
     def run_query(self, query: str, data={}):
