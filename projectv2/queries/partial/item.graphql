@@ -1,0 +1,59 @@
+id
+assignees(first: 100) {
+edges {
+    node {
+    id
+    email
+    login
+    name
+    }
+}
+}
+author {
+login
+... on User {
+    id
+    email
+    login
+    name
+}
+}
+body
+closed
+closedAt
+createdAt
+labels(first: 100) {
+edges {
+    node {
+    id
+    name
+    description
+    }
+}
+}
+number
+title
+updatedAt
+url
+trackedInIssues(first: 100) {
+    edges {
+    node {
+        id
+        title
+        url
+        number
+        closed
+    }
+    }
+}
+trackedIssues(first: 100) {
+    edges {
+    node {
+        id
+        title
+        url
+        number
+        closed
+    }
+    }
+}
