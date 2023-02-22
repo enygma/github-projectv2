@@ -62,6 +62,7 @@ The `Project` module is used to get the information about a project. It results 
 - `shortDescription` (string): Short description of the project
 - `public` (boolean): Visibility for the project (public=`True`, private=`False`)
 - `readme` (string): Full readme for the project
+- `url` (string): Full public-facing URL location of the project
 
 **NOTE:** When the `get` method is called on the `Project`, the `get_fields` method will automatically be called to populate the `fields` property with instances of the `Field` class.
 

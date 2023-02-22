@@ -20,6 +20,7 @@ class Project(Base):
     shortDescription = ""
     public = False
     readme = ""
+    url = ""
 
     def __init__(self, node=None):
         super().__init__()
@@ -39,6 +40,7 @@ class Project(Base):
         self.shortDescription = node.get("shortDescription")
         self.public = node.get("public")
         self.readme = node.get("readme")
+        self.url = node.get("url")
 
         if node.get("fields") is not None:
             for field in node.get("fields"):
@@ -61,6 +63,7 @@ class Project(Base):
                 shortDescription
                 public
                 readme
+                url
             }
         }
         }
