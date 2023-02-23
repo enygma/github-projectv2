@@ -4,7 +4,7 @@ import requests
 from dotenv import load_dotenv
 
 load_dotenv()
-headers = {"Authorization": "bearer %s" % os.getenv("GITHUB_API_TOKEN")}
+headers = {"Authorization": "bearer %s" % os.getenv("GH_API_TOKEN")}
 
 
 class Base:
@@ -21,6 +21,7 @@ class Base:
             headers=headers,
         )
         if request.status_code == 200:
+            # print("OUT: %s" % request.text)
             return request.json()
         else:
             raise Exception(

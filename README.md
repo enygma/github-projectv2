@@ -5,11 +5,11 @@ This is an in-progress client to use the ProjectV2 functionality through the Git
 ## Setup
 
 1. Install the `projectv2` module: `pip3 install github-projectv2`
-2. Create a `.env` file in the root containing a value for `GITHUB_API_TOKEN` (this will be loaded using `python-dotenv`)
+2. Create a `.env` file in the root containing a value for `GH_API_TOKEN` (this will be loaded using `python-dotenv`)
 3. Use the `requirements.txt` file to ensure you have all of the dependencies you need.
 4. Enjoy!
 
-**NOTE:** You can use an actual environment variable instead of the `.env` approach, setting the same `GITHUB_API_TOKEN` value
+**NOTE:** You can use an actual environment variable instead of the `.env` approach, setting the same `GH_API_TOKEN` value
 
 ## Example Usage
 

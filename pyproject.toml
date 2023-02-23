@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "projectv2"
-version = "0.1.2"
+version = "0.1.4"
 description = ""
 authors = ["Chris Cornutt <enygma@github.com>"]
 readme = "README.md"
