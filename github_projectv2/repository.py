@@ -1,5 +1,5 @@
-from projectv2.base import Base
-from projectv2.milestone import Milestone
+from github_projectv2.base import Base
+from github_projectv2.milestone import Milestone
 
 
 class Repository(Base):

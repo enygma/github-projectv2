@@ -1,8 +1,8 @@
 import json
 
-from projectv2.base import Base
-from projectv2.field import Field
-from projectv2.item import Item
+from github_projectv2.base import Base
+from github_projectv2.field import Field
+from github_projectv2.item import Item
 
 
 class Project(Base):

@@ -1,7 +1,7 @@
-from projectv2.base import Base
-from projectv2.field import Field
-from projectv2.label import Label
-from projectv2.user import User
+from github_projectv2.base import Base
+from github_projectv2.field import Field
+from github_projectv2.label import Label
+from github_projectv2.user import User
 
 
 class Item(Base):

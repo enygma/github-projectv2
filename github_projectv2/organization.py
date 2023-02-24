@@ -1,5 +1,5 @@
-from projectv2.base import Base
-from projectv2.repository import Repository
+from github_projectv2.base import Base
+from github_projectv2.repository import Repository
 
 
 class Organization(Base):

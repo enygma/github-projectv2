@@ -1,5 +1,5 @@
-from projectv2.base import Base
-from projectv2.option import Option
+from github_projectv2.base import Base
+from github_projectv2.option import Option
 
 
 class Field(Base):
