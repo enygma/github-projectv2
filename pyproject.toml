@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "projectv2"
+name = "github-projectv2"
 version = "0.1.4"
 description = ""
 authors = ["Chris Cornutt <enygma@github.com>"]
