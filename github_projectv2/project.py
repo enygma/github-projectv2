@@ -72,6 +72,11 @@ class Project(Base):
             projectNumber,
         )
         results = self.run_query(query)
+
+        # See if the project was found
+        if results["data"]["organization"]["projectV2"] is None:
+            raise Exception("ERROR: %s" % results["errors"][0]["message"])
+
         project = results["data"]["organization"]["projectV2"]
 
         self.org = org

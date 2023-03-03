@@ -259,3 +259,27 @@ class Item(Base):
         results = self.run_query(query)
 
         return results
+
+    def save(self):
+        """Save the issue"""
+
+        if self.id is None:
+            raise Exception("No ID set")
+
+        data = {"id": self.id, "title": self.title, "body": self.body}
+        itemQuery = self.get_query("partial/item")
+
+        query = """
+        mutation ($input:UpdateIssueInput!){
+            updateIssue(input: $input) {
+                clientMutationId,
+                issue {
+                    %s
+                }
+            }
+        }
+        """ % (
+            itemQuery
+        )
+        results = self.run_query(query, {"input": data})
+        return results
