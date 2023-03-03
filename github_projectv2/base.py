@@ -4,7 +4,7 @@ import requests
 from dotenv import load_dotenv
 
 load_dotenv()
-headers = {"Authorization": "bearer %s" % os.getenv("GH_API_TOKEN")}
+headers = {"Authorization": "bearer %s" % os.getenv("GITHUB_API_TOKEN")}
 
 
 class Base:
