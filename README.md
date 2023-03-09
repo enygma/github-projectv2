@@ -220,10 +220,26 @@ The `Organization` module is used to represent an organization in the system. It
 `get(login)`
 Where:
 - `login` (string) the name of the organization
+Returns:
+- A single object of type `Organization`
 
 `get_repositories(login)`
 Where:
 - `login` (string): the name of the organization (`name` is optional, but if not set `get` must be called first)
+Returns:
+- A set of `Repository` class objects populated with repository data
+
+### Search
+The `Search` module is used to make searches using the `search()` method on the GraphQL API using a format similar to those used in the search on the website.
+
+- No properties defined
+
+#### Methods
+`issues`
+Where:
+- `filter` (string): the search filter string
+Returns:
+- Set of `Item` class objects populated with matching issue data
 
 
 Resource: [https://mathspp.com/blog/how-to-create-a-python-package-in-2022](https://mathspp.com/blog/how-to-create-a-python-package-in-2022)
