@@ -69,22 +69,47 @@ The `Project` module is used to get the information about a project. It results 
 #### Methods
 
 `get(org, projectNumber)`: Get a project by organization name and public-facing project number
+Where:
+- `org` (string): the name of the organization
+- `projectNumber` (string): the public-facing ID for the project
+
 `get_fields(org)`: Get the fields for a project given the organization name and public-facing project number
 Where:
 - `org` is the name of the organization (optional)
+
 `get_items(org)`: Get the items currently in the project (issues)
 Where:
 - `org` is the name of the organization
+Returns:
+- A set of `Item` object types
+
+`get_views(org)`: Get the current list of views for the project
+Where:
+- `org` (string): optional name of the organization
+Returns:
+- A set of `View` object types
+
 `create(data)`: Create a new project
 Where:
 - `data` (list): Data to use in the creation of the project (required values: `title`, `ownerId`)
+Returns:
+- A `Project` instance with the new data set
+
 `remove_item(item)`: Removes an item from a project
 Where:
 - `item` must be a record as fetched by `get_items`, not from a call to `Item.get`
+Returns:
+- The internal ID of the deleted item
+
 `add_item(item)`: Adds an item/issue to a project
 Where:
 - `item` is a record as fetched by `Item.get` or from the list from `Project.get_items`
+Returns:
+- The internal ID of the item that was added
+
 `save()`: Saves the current state of the project record (fields saved are title, shortDescription, readme, closed)
+Returns:
+- The current instance, a `Project` with the updated information
 
 **NOTE:** the `get_fields` and `get_items` require that the project is fetched using `get` first and will throw an error otherwise.
 
@@ -241,5 +266,13 @@ Where:
 Returns:
 - Set of `Item` class objects populated with matching issue data
 
+### View
+The `View` module represents a view in the project (a tab). It results in an instance with the following properties:
+
+- `id` (string): internal ID of the view
+- `number` (string): the public ID of the view
+- `sortBy` (array): populated when a view is sorted (contains: `field.name`, `field.id` (internal), `field.dataType`, `direction`)
+- `groupBy` (array): populated when a view is grouped (contains: `id` (internal), `name`)
+- `layout` (string): Layout of the view (ex: `TABLE_LAYOUT` or `BOARD_LAYOUT`)
 
 Resource: [https://mathspp.com/blog/how-to-create-a-python-package-in-2022](https://mathspp.com/blog/how-to-create-a-python-package-in-2022)

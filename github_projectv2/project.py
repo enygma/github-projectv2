@@ -3,6 +3,7 @@ import json
 from github_projectv2.base import Base
 from github_projectv2.field import Field
 from github_projectv2.item import Item
+from github_projectv2.view import View
 
 
 class Project(Base):
@@ -13,6 +14,7 @@ class Project(Base):
     number = None
     fields = []
     items = []
+    views = []
     org = None
     createdAt = None
     closedAt = None
@@ -203,6 +205,72 @@ class Project(Base):
 
             node = Item(item)
             self.items.append(node)
+            returnItems.append(node)
+
+        return returnItems
+
+    def get_views(self, org=None):
+        if org is None and self.org is None:
+            raise Exception("Organization not set")
+
+        if self.number is None:
+            raise Exception("Project number not set")
+
+        if org is None:
+            org = self.org
+
+        query = """
+        {
+        organization(login: "%s") {
+            id
+            projectV2(number: %s) {
+            id
+            views(first: 100) {
+                edges {
+                node {
+                    id
+                    name
+                    layout
+                    sortBy(first: 10) {
+                    edges {
+                        node {
+                        direction
+                        field {
+                            name
+                            id
+                            dataType
+                        }
+                        }
+                    }
+                    }
+                    groupBy(first: 100) {
+                    edges {
+                        node {
+                        id
+                        name
+                        }
+                    }
+                    }
+                }
+                }
+            }
+            }
+        }
+        }
+        """ % (
+            org,
+            self.number,
+        )
+
+        results = self.run_query(query)
+        views = results["data"]["organization"]["projectV2"]["views"]["edges"]
+
+        returnItems = []
+        for index in range(len(views)):
+            item = views[index]["node"]
+
+            node = View(item)
+            self.views.append(node)
             returnItems.append(node)
 
         return returnItems
