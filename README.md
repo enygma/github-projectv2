@@ -135,11 +135,11 @@ The `Item` module is used to represent an item in a project (an issue record). I
 
 #### Methods
 
-`update_field_value(project, field, option)`: Update a single select field to a new value
+`update_field_value(project, field, input)`: Update a single select field to a new value
 Where:
 - `project` = a `Project` instance
 - `field` = a `Field` instance representing the field to update the value on
-- `option` = an `Option` instance representing the new value
+- `option` = Either an an `Option` instance representing the new value or a string value
 
 `get(org, repo, itemId)`
 Where:

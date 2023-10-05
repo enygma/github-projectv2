@@ -1,6 +1,7 @@
 from github_projectv2.base import Base
 from github_projectv2.field import Field
 from github_projectv2.label import Label
+from github_projectv2.option import Option
 from github_projectv2.user import User
 
 
@@ -130,25 +131,39 @@ class Item(Base):
         for label in item.get("labels").get("edges"):
             self.labels.append(Label(label.get("node")))
 
-    def update_field_value(self, project, field, option):
+    def update_field_value(self, project, field, input):
         """
         Update the field value
 
         :param project: The Project object
         :param field: The Field object
-        :param option: The Option object
+        :param value: Either an Option object if the field is a SINGLE_SELECT, or a string
         """
+
+        match field.dataType:
+            case "SINGLE_SELECT":
+                if not isinstance(input, Option):
+                    raise Exception(
+                        'Input for "update_field_value" method must be an Option object'
+                    )
+                value = '{"singleSelectOptionId":"%s"}' % input.id
+            case "DATE":
+                value = '{date:"%s"}' % input
+            case "TEXT":
+                value = '{text:"%s"}' % input
+            case "NUMBER":
+                value = "{number:%s}" % input
 
         query = """
         mutation {
-            updateProjectV2ItemFieldValue(input: {itemId: "%s", fieldId: "%s", value: {singleSelectOptionId:"%s"}, projectId:"%s"}) {
+            updateProjectV2ItemFieldValue(input: {itemId: "%s", fieldId: "%s", value: %s, projectId:"%s"}) {
                 clientMutationId
             }
         }
         """ % (
             self.projectNodeId,
             field.id,
-            option.id,
+            value,
             project.id,
         )
         results = self.run_query(query)

@@ -358,3 +358,50 @@ class Project(Base):
         results = self.run_query(query, {"input": data})
 
         return self
+
+    def field(self, name):
+        """Get just one field"""
+
+        if self.org is None:
+            raise Exception("Organization not set")
+
+        if self.number is None:
+            raise Exception("Project number not set")
+
+        query = """
+        {
+        organization(login: "%s") {
+            id
+            projectV2(number: %s) {
+            id
+            field(name: "%s") {
+                ... on ProjectV2Field {
+                id
+                name
+                }
+                ... on ProjectV2IterationField {
+                id
+                name
+                }
+                ... on ProjectV2SingleSelectField {
+                id
+                name
+                options {
+                    id
+                    name
+                }
+                }
+            }
+            }
+        }
+        }""" % (
+            self.org,
+            self.number,
+            name,
+        )
+        results = self.run_query(query)
+
+        if results["data"]["organization"]["projectV2"]["field"] is not None:
+            return Field(results["data"]["organization"]["projectV2"]["field"])
+
+        return None
