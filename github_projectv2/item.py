@@ -146,7 +146,7 @@ class Item(Base):
                     raise Exception(
                         'Input for "update_field_value" method must be an Option object'
                     )
-                value = '{"singleSelectOptionId":"%s"}' % input.id
+                value = '{singleSelectOptionId:"%s"}' % input.id
             case "DATE":
                 value = '{date:"%s"}' % input
             case "TEXT":
