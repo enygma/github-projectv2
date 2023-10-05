@@ -15,6 +15,7 @@ class Field(Base):
         self.id = node.get("id")
         self.name = node.get("name")
         self.dataType = node.get("dataType")
+        self.options = node.get("options")
 
         if self.dataType == "SINGLE_SELECT":
             for option in node.get("options"):
