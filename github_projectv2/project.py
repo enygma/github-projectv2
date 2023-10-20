@@ -24,6 +24,9 @@ class Project(Base):
     readme = ""
     url = ""
 
+    itemEndCursor = ""
+    itemHasNextPage = False
+
     def __init__(self, node=None):
         super().__init__()
 
@@ -43,6 +46,9 @@ class Project(Base):
         self.public = node.get("public")
         self.readme = node.get("readme")
         self.url = node.get("url")
+
+        self.itemEndCursor = ""
+        self.itemHasNextPage = False
 
         if node.get("fields") is not None:
             for field in node.get("fields"):
@@ -167,7 +173,11 @@ class Project(Base):
             id
             projectV2(number: %s) {
             id
-            items(first: 100) {
+            items(first: 100, after:AFTER) {
+                pageInfo {
+                    hasNextPage
+                    endCursor
+                }
                 nodes {
                 id
                 type
@@ -191,8 +201,23 @@ class Project(Base):
             self.number,
             itemQuery,
         )
+
+        # Replace for our "AFTER" so we can paginate
+        query = query.replace(
+            "AFTER", '"{}"'.format(self.itemEndCursor) if self.itemEndCursor else "null"
+        )
         results = self.run_query(query)
 
+        # Get the page info to see about pagination
+        pageInfo = results["data"]["organization"]["projectV2"]["items"]["pageInfo"]
+        if pageInfo["hasNextPage"]:
+            self.itemHasNextPage = True
+            self.itemEndCursor = pageInfo["endCursor"]
+        else:
+            self.itemHasNextPage = False
+            self.itemEndCursor = ""
+
+        # Get the items from the results and make them into Item objects
         items = results["data"]["organization"]["projectV2"]["items"]["edges"]
         returnItems = []
         for index in range(len(items)):
