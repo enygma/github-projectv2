@@ -77,15 +77,17 @@ Where:
 Where:
 - `org` is the name of the organization (optional)
 
-`get_items(org)`: Get the items currently in the project (issues)
-Where:
-- `org` is the name of the organization
+`get_items(args)`: Get the items currently in the project (issues)
+Where `args` are one or more named variables:
+- `org` (string) is the name of the organization
+- `options` (dict) are options for the query (see "Query Options" section below)
 Returns:
 - A set of `Item` object types
 
-`get_views(org)`: Get the current list of views for the project
-Where:
+`get_views(args)`: Get the current list of views for the project
+Where `args` are one or more named variables:
 - `org` (string): optional name of the organization
+- `options` (dict) are options for the query (see "Query Options" section below)
 Returns:
 - A set of `View` object types
 
@@ -276,3 +278,11 @@ The `View` module represents a view in the project (a tab). It results in an ins
 - `layout` (string): Layout of the view (ex: `TABLE_LAYOUT` or `BOARD_LAYOUT`)
 
 Resource: [https://mathspp.com/blog/how-to-create-a-python-package-in-2022](https://mathspp.com/blog/how-to-create-a-python-package-in-2022)
+
+
+## Query Options
+In some methods (such as `project.get_items`) use can used named arguments to configure the requests made to the API (see method definitions above to determine which support the `options` named variable)
+
+### Supported options:
+- `includeTrackedInIssues`: Includes information about the other item(s) the current item is tracked in (Values: `True`/`False`)
+- `includeTrackedIssues`: Include information about the item(s) being tracked by this item  (Values: `True`/`False`)

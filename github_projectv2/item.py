@@ -60,6 +60,10 @@ class Item(Base):
         if node.get("assignees") is not None:
             self.load_assignees(node)
 
+        # Make sure our labels are loaded correctly
+        if node.get("labels") is not None:
+            self.load_labels(node)
+
     def load_assignees(self, node):
         """Load the assignees"""
 
@@ -89,6 +93,16 @@ class Item(Base):
         trackedInIssues = node.get("trackedInIssues").get("edges")
         for item in trackedInIssues:
             self.trackedInIssues.append(Item(item.get("node")))
+
+    def load_labels(self, node):
+        """Load the labels"""
+
+        if node.get("labels") is None:
+            return
+
+        labels = node.get("labels").get("edges")
+        for label in labels:
+            self.labels.append(Label(label.get("node")))
 
     ## ----------------------------------------
 
