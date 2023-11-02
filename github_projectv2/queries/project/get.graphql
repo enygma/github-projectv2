@@ -1,0 +1,17 @@
+{
+    organization(login: "{{ orgName }}") {
+        id
+        projectV2(number: {{ projectNumber }}) {
+            id
+            title
+            number
+            createdAt
+            closedAt
+            closed
+            shortDescription
+            public
+            readme
+            url
+        }
+    }
+}

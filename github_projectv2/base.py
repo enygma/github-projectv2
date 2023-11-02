@@ -2,6 +2,7 @@ import os
 
 import requests
 from dotenv import load_dotenv
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 load_dotenv()
 headers = {"Authorization": "bearer %s" % os.getenv("GITHUB_API_TOKEN")}
@@ -10,6 +11,13 @@ headers = {"Authorization": "bearer %s" % os.getenv("GITHUB_API_TOKEN")}
 class Base:
     def __init__(self, request=None):
         self.request = None
+
+        # Set up the Jinja2 environment
+        dirname = os.path.dirname(__file__)
+        self.jinja = env = Environment(
+            loader=FileSystemLoader("%s/queries" % dirname),
+            autoescape=select_autoescape(),
+        )
 
     def run_query(self, query: str, data={}):
         """

@@ -1,0 +1,28 @@
+{
+    organization(login: "{{ orgName }}") {
+        id
+        projectV2(number: {{ projectNumber }}) {
+        id
+        items(first: 100, after:AFTER) {
+            pageInfo {
+                hasNextPage
+                endCursor
+            }
+            nodes {
+                id
+                type
+                createdAt
+            }
+            edges {
+                node {
+                    content {
+                        ... on Issue {
+                            {% include "partial/item.graphql" %}
+                        }
+                    }
+                }
+            }
+        }
+        }
+    }
+}

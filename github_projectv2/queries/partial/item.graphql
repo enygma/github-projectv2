@@ -35,6 +35,7 @@ number
 title
 updatedAt
 url
+{% if options['includeTrackedInIssues'] %}
 trackedInIssues(first: 100) {
     edges {
     node {
@@ -46,6 +47,8 @@ trackedInIssues(first: 100) {
     }
     }
 }
+{% endif %}
+{% if options['includeTrackedIssues'] %}
 trackedIssues(first: 100) {
     edges {
     node {
@@ -57,3 +60,4 @@ trackedIssues(first: 100) {
     }
     }
 }
+{% endif %}

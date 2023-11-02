@@ -1,0 +1,26 @@
+{
+    organization(login: "{{ orgName }}") {
+        id
+        projectV2(number: {{ projectNumber }}) {
+        id
+        field(name: "{{ fieldName }}") {
+            ... on ProjectV2Field {
+            id
+            name
+            }
+            ... on ProjectV2IterationField {
+            id
+            name
+            }
+            ... on ProjectV2SingleSelectField {
+            id
+            name
+            options {
+                id
+                name
+            }
+            }
+        }
+        }
+    }
+}

@@ -1,0 +1,33 @@
+{
+    organization(login: "{{ orgName }}") {
+        id
+        projectV2(number: {{ projectNumber }}) {
+        id
+        fields(first: 100) {
+            edges {
+            node {
+                ... on ProjectV2Field {
+                id
+                name
+                dataType
+                }
+                ... on ProjectV2IterationField {
+                id
+                name
+                dataType
+                }
+                ... on ProjectV2SingleSelectField {
+                id
+                name
+                dataType
+                options {
+                    name
+                    id
+                }
+                }
+            }
+            }
+        }
+        }
+    }
+}

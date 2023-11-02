@@ -57,27 +57,12 @@ class Project(Base):
     def get(self, org: str, projectNumber: str):
         """Fetch the project data"""
 
-        query = """
-        {
-        organization(login: "%s") {
-            id
-            projectV2(number: %s) {
-                id
-                title
-                number
-                createdAt
-                closedAt
-                closed
-                shortDescription
-                public
-                readme
-                url
+        template = self.jinja.get_template("project/get.graphql")
+        query = template.render(
+            {
+                "orgName": org,
+                "projectNumber": projectNumber,
             }
-        }
-        }
-        """ % (
-            org,
-            projectNumber,
         )
         results = self.run_query(query)
 
@@ -89,12 +74,22 @@ class Project(Base):
 
         self.org = org
         self.load(project)
-        self.fields = self.get_fields(org)
+        self.fields = self.get_fields(org=org)
 
         return self
 
-    def get_fields(self, org=None):
+    def get_fields(self, **kwargs):
         """Get the fields for this project"""
+
+        if "org" in kwargs:
+            org = kwargs["org"]
+        else:
+            org = None
+
+        if "options" in kwargs:
+            options = kwargs["options"]
+        else:
+            options = {}
 
         if self.org is None and org is None:
             raise Exception("Organization not set")
@@ -105,43 +100,10 @@ class Project(Base):
         if self.number is None:
             raise Exception("Project number not set")
 
-        query = """
-        {
-        organization(login: "%s") {
-            id
-            projectV2(number: %s) {
-            id
-            fields(first: 100) {
-                edges {
-                node {
-                    ... on ProjectV2Field {
-                    id
-                    name
-                    dataType
-                    }
-                    ... on ProjectV2IterationField {
-                    id
-                    name
-                    dataType
-                    }
-                    ... on ProjectV2SingleSelectField {
-                    id
-                    name
-                    dataType
-                    options {
-                        name
-                        id
-                    }
-                    }
-                }
-                }
-            }
-            }
-        }
-        }
-        """ % (
-            org,
-            self.number,
+        # Get the template and build the query
+        template = self.jinja.get_template("project/get_fields.graphql")
+        query = template.render(
+            {"orgName": org, "projectNumber": self.number, "options": options}
         )
         results = self.run_query(query)
 
@@ -154,7 +116,18 @@ class Project(Base):
 
         return returnFields
 
-    def get_items(self, org=None):
+    def get_items(self, **kwargs):
+
+        if "org" in kwargs:
+            org = kwargs["org"]
+        else:
+            org = None
+
+        if "options" in kwargs:
+            options = kwargs["options"]
+        else:
+            options = {}
+
         if org is None and self.org is None:
             raise Exception("Organization not set")
 
@@ -164,42 +137,10 @@ class Project(Base):
         if org is None:
             org = self.org
 
-        # Get the partial for the issue query
-        itemQuery = self.get_query("partial/item")
-
-        query = """
-        {
-        organization(login: "%s") {
-            id
-            projectV2(number: %s) {
-            id
-            items(first: 100, after:AFTER) {
-                pageInfo {
-                    hasNextPage
-                    endCursor
-                }
-                nodes {
-                id
-                type
-                createdAt
-                }
-                edges {
-                node {
-                    content {
-                    ... on Issue {
-                        %s
-                    }
-                    }
-                }
-                }
-            }
-            }
-        }
-        }
-        """ % (
-            org,
-            self.number,
-            itemQuery,
+        # Get the template and build the query
+        template = self.jinja.get_template("project/get_items.graphql")
+        query = template.render(
+            {"orgName": org, "projectNumber": self.number, "options": options}
         )
 
         # Replace for our "AFTER" so we can paginate
@@ -234,7 +175,12 @@ class Project(Base):
 
         return returnItems
 
-    def get_views(self, org=None):
+    def get_views(self, **kwargs):
+        if "org" in kwargs:
+            org = kwargs["org"]
+        else:
+            org = None
+
         if org is None and self.org is None:
             raise Exception("Organization not set")
 
@@ -244,47 +190,15 @@ class Project(Base):
         if org is None:
             org = self.org
 
-        query = """
-        {
-        organization(login: "%s") {
-            id
-            projectV2(number: %s) {
-            id
-            views(first: 100) {
-                edges {
-                node {
-                    id
-                    name
-                    layout
-                    sortBy(first: 10) {
-                    edges {
-                        node {
-                        direction
-                        field {
-                            name
-                            id
-                            dataType
-                        }
-                        }
-                    }
-                    }
-                    groupBy(first: 100) {
-                    edges {
-                        node {
-                        id
-                        name
-                        }
-                    }
-                    }
-                }
-                }
-            }
-            }
-        }
-        }
-        """ % (
-            org,
-            self.number,
+        if "options" in kwargs:
+            options = kwargs["options"]
+        else:
+            options = {}
+
+        # Get the template and build the query
+        template = self.jinja.get_template("project/get_views.graphql")
+        query = template.render(
+            {"orgName": org, "projectNumber": self.number, "options": options}
         )
 
         results = self.run_query(query)
@@ -393,36 +307,10 @@ class Project(Base):
         if self.number is None:
             raise Exception("Project number not set")
 
-        query = """
-        {
-        organization(login: "%s") {
-            id
-            projectV2(number: %s) {
-            id
-            field(name: "%s") {
-                ... on ProjectV2Field {
-                id
-                name
-                }
-                ... on ProjectV2IterationField {
-                id
-                name
-                }
-                ... on ProjectV2SingleSelectField {
-                id
-                name
-                options {
-                    id
-                    name
-                }
-                }
-            }
-            }
-        }
-        }""" % (
-            self.org,
-            self.number,
-            name,
+        # Get the template and build the query
+        template = self.jinja.get_template("project/get_field.graphql")
+        query = template.render(
+            {"orgName": self.org, "projectNumber": self.number, "fieldName": name}
         )
         results = self.run_query(query)
 
