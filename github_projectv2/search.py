@@ -5,7 +5,8 @@ from github_projectv2.item import Item
 class Search(Base):
     def issues(self, filter):
         # Get the partial for the issue query
-        itemQuery = self.get_query("partial/item")
+        template = self.jinja.get_template("partial/item.graphql")
+        itemQuery = template.render({"options": []})
 
         query = """{
             search(
