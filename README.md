@@ -134,6 +134,7 @@ The `Item` module is used to represent an item in a project (an issue record). I
 - `projectNodeId` (string): The internal ID of the item (used when relating to a project, otherwise `None`)
 - `trackedIssues` (list): A set of `Item` instances
 - `trackedInIssues` (list): A set of `Item` instances
+- `timeline` (list): A set of `*Event` instances (see below for which events are currently supported)
 
 #### Methods
 
@@ -279,6 +280,18 @@ The `View` module represents a view in the project (a tab). It results in an ins
 
 Resource: [https://mathspp.com/blog/how-to-create-a-python-package-in-2022](https://mathspp.com/blog/how-to-create-a-python-package-in-2022)
 
+### Timeline Events
+Several of the methods, including `item.get` and `project.get_items` (if the value for `includeTimelineEvents` is `True`) will also pull in the timeline events for an item. This timeline provides details about actions like: when an issue was labeled, when someone subscribed to an issue, and when a user was mentioned in an issue. We currently support several event types:
+
+- `AssignedEvent`
+- `UnassignedEvent`
+- `IssueComment`
+- `LabeledEvent`
+- `UnlabeledEvent`
+- `MentionedEvent`
+- `SubscribedEvent`
+
+You can find out more about what properties each of these support [in the GitHub API object documentation](https://docs.github.com/en/graphql/reference/objects).
 
 ## Query Options
 In some methods (such as `project.get_items`) use can used named arguments to configure the requests made to the API (see method definitions above to determine which support the `options` named variable)
@@ -286,3 +299,28 @@ In some methods (such as `project.get_items`) use can used named arguments to co
 ### Supported options:
 - `includeTrackedInIssues`: Includes information about the other item(s) the current item is tracked in (Values: `True`/`False`)
 - `includeTrackedIssues`: Include information about the item(s) being tracked by this item  (Values: `True`/`False`)
+- `includeTimelineEvents`: Include the timeline events that were taken on the item (Values: `True`/`False`)
+
+
+### Development
+
+This package makes use of the [Poetry](https://python-poetry.org/) packaging tool. In order to do development work, you should perform the following steps:
+
+```
+cd projectv2
+poetry shell
+```
+
+Then you can run your script from there. In my case, it's one called `test.py` that lives one directory up, so: `python3 ../test.py`
+
+Then, to package, build, and push it up to the PyPi platform:
+
+1. Update the `version` in `pyproject.toml`
+2. Commit the changes and add a new tag
+3. Push the updates to the repo (including the new tag)
+4. Run the build and push commands from outside of the `poetry` shell:
+
+```
+poetry build
+poetry publish
+```

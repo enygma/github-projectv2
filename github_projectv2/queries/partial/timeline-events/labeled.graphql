@@ -1,0 +1,14 @@
+... on LabeledEvent {
+    id
+    actor {
+        login
+    }
+    label {
+        id
+        color
+        createdAt
+        description
+        name
+        url
+    }       
+}

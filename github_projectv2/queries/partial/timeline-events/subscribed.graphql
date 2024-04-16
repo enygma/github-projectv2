@@ -1,0 +1,11 @@
+... on SubscribedEvent {
+    id
+    createdAt
+    actor {
+        login
+    }
+    subscribable {
+        __typename
+        id
+    }
+}

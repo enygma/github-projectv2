@@ -1,4 +1,6 @@
+from github_projectv2 import timeline_event
 from github_projectv2.base import Base
+from github_projectv2.comment import Comment
 from github_projectv2.field import Field
 from github_projectv2.label import Label
 from github_projectv2.option import Option
@@ -28,6 +30,8 @@ class Item(Base):
         self.projectNodeId = None
         self.trackedIssues = []
         self.trackedInIssues = []
+        self.comments = []
+        self.timeline = []
 
         if node is not None:
             self.load(node)
@@ -63,6 +67,14 @@ class Item(Base):
         # Make sure our labels are loaded correctly
         if node.get("labels") is not None:
             self.load_labels(node)
+
+        # Make sure our comments are loaded correctly
+        if node.get("comments") is not None:
+            self.load_comments(node)
+
+        # Make sure our timeline is loaded correctly
+        if node.get("timeline") is not None:
+            self.load_timeline(node)
 
     def load_assignees(self, node):
         """Load the assignees"""
@@ -104,13 +116,43 @@ class Item(Base):
         for label in labels:
             self.labels.append(Label(label.get("node")))
 
+    def load_comments(self, node):
+        """Load the comments"""
+
+        if node.get("comments") is None:
+            return
+
+        comments = node.get("comments").get("edges")
+        for comment in comments:
+            self.comments.append(Comment(comment.get("node")))
+
+    def load_timeline(self, node):
+        """Load the timeline"""
+
+        if node.get("timelineItems") is None:
+            return
+
+        # For each of the items in the timeline, make an object and push it into the list
+        timeline = node.get("timelineItems").get("edges")
+        for event in timeline:
+            event_type = event.get("node").get("__typename")
+            evt = eval("timeline_event.%s.%s()" % (event_type, event_type))
+            evt.load(event.get("node"))
+
+            self.timeline.append(evt)
+
     ## ----------------------------------------
 
     def get(self, org: str, repo: str, itemId: str):
         """Get the item data"""
 
+        template = self.jinja.get_template("partial/item.graphql")
+        item_query = template.render(
+            {"options": {"includeComments": True, "includeTimelineEvents": True}}
+        )
+
         # Get the partial query for an Item
-        itemQuery = self.get_query("partial/item")
+        # itemQuery = self.get_query("partial/item")
         query = """
         {
         organization(login: "%s") {
@@ -127,7 +169,7 @@ class Item(Base):
             org,
             repo,
             itemId,
-            itemQuery,
+            item_query,
         )
         results = self.run_query(query)
 
@@ -137,6 +179,9 @@ class Item(Base):
 
         # Set the assignees
         self.load_assignees(item)
+
+        # Set the timeline events
+        self.load_timeline(item)
 
         # Set the author
         self.author = User(item.get("author"))

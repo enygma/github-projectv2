@@ -35,6 +35,34 @@ number
 title
 updatedAt
 url
+{% if options['includeTimelineEvents'] %}
+{% include "partial/issue-timeline-events.graphql" %}
+{% endif %}
+{% if options['includeComments'] %}
+comments(first: 100) {
+    edges {
+    node {
+        ... on IssueComment {
+            id
+            author {
+            login
+            ... on User {
+                id
+                email
+                login
+                name
+            }
+            }
+            body
+            createdAt
+            updatedAt
+        }
+    }
+    }
+}
+{% endif %}
+{% if options['includeCommits'] %}
+{% endif %}
 {% if options['includeTrackedInIssues'] %}
 trackedInIssues(first: 100) {
     edges {

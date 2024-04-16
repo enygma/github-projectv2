@@ -1,0 +1,25 @@
+... on UnassignedEvent {
+    id
+    actor {
+        login
+        url
+    }
+    assignable {
+        __typename
+        assignees(first:100) {
+            nodes {
+                id
+                login
+            }												
+        }
+        
+    }
+    assignee {
+        __typename
+        ... on User {
+            id
+            login
+        }
+    }
+    createdAt
+}

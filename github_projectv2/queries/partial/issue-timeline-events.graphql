@@ -1,0 +1,96 @@
+timelineItems(first:100) {
+	edges {
+		node {
+            __typename
+			... on AddedToProjectEvent {
+                id
+            }
+            {% include "partial/timeline-events/assigned.graphql" %}
+            {% include "partial/timeline-events/unassigned.graphql" %}
+            ... on ClosedEvent {
+                    id
+                }
+            ... on CommentDeletedEvent {
+                    id
+                }
+            ... on ConnectedEvent {
+                    id
+                }
+            ... on ConvertedNoteToIssueEvent {
+                    id
+                }
+            ... on ConvertedToDiscussionEvent {
+                    id
+                }
+            ... on CrossReferencedEvent {
+                    id
+                }
+            ... on DemilestonedEvent {
+                    id
+                }
+            ... on DisconnectedEvent {
+                    id
+                }
+            {% include "partial/timeline-events/issue-comment.graphql" %}
+            {% include "partial/timeline-events/labeled.graphql" %}
+            ... on LockedEvent {
+                    id
+                    createdAt
+                    lockReason
+                    lockable {
+                        activeLockReason
+                        locked
+                    }
+                    actor {
+                        login
+                    }
+                }
+            ... on MarkedAsDuplicateEvent {
+                    id
+                }
+            {% include "partial/timeline-events/mentioned.graphql" %}
+            ... on MilestonedEvent {
+                    id
+                }
+            ... on MovedColumnsInProjectEvent {
+                    id
+                }
+            ... on PinnedEvent {
+                    id
+                }
+            ... on ReferencedEvent {
+                    id
+                }
+            ... on RemovedFromProjectEvent {
+                    id
+                }
+            ... on RenamedTitleEvent {
+                    id
+                }
+            ... on ReopenedEvent {
+                    id
+                }
+            {% include "partial/timeline-events/subscribed.graphql" %}
+            ... on TransferredEvent {
+                    id
+                }
+            {% include "partial/timeline-events/subscribed.graphql" %}
+            {% include "partial/timeline-events/unlabeled.graphql" %}
+            ... on UnlockedEvent {
+                    id
+                }
+            ... on UnmarkedAsDuplicateEvent {
+                    id
+                }
+            ... on UnpinnedEvent {
+                    id
+                }
+            ... on UnsubscribedEvent {
+                    id
+                }
+            ... on UserBlockedEvent {
+                    id
+                }
+        }
+	}
+}

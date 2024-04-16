@@ -1,0 +1,24 @@
+... on IssueComment {
+    id
+    author {
+        __typename
+        login
+    }
+    body
+    createdAt
+    updatedAt
+    url
+    issue {
+        __typename
+        id
+        number
+        title
+        updatedAt
+        url
+        body
+    }
+    repository {
+        id
+        name
+    }
+}

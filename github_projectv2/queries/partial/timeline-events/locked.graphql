@@ -1,0 +1,12 @@
+... on LockedEvent {
+    id
+    createdAt
+    lockReason
+    lockable {
+        activeLockReason
+        locked
+    }
+    actor {
+        login
+    }
+}
