@@ -160,6 +160,10 @@ Where:
 - `repository`: a `Repository` instance
 - `data`: a data set containing: `assigneeIds`, `body`, `title` (optional: `labelIds`, `milestoneId`)
 
+`add_label(label_name)`
+Where:
+- `label_name` is the "name" of the label to add (not the ID)
+
 ### Option
 The `Option` module is used to represent an option on a single-select field. It results in an instance with the following properties:
 
