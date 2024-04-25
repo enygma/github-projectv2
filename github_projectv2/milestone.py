@@ -1,6 +1,4 @@
 from github_projectv2.base import Base
-from github_projectv2.field import Field
-from github_projectv2.item import Item
 
 
 class Milestone(Base):

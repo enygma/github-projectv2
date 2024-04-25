@@ -35,6 +35,9 @@ number
 title
 updatedAt
 url
+repository {
+    {% include "partial/repository.graphql" %}
+}
 {% if options['includeTimelineEvents'] %}
 {% include "partial/issue-timeline-events.graphql" %}
 {% endif %}

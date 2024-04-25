@@ -4,6 +4,8 @@ from github_projectv2.comment import Comment
 from github_projectv2.field import Field
 from github_projectv2.label import Label
 from github_projectv2.option import Option
+from github_projectv2.organization import Organization
+from github_projectv2.repository import Repository
 from github_projectv2.user import User
 
 
@@ -32,6 +34,8 @@ class Item(Base):
         self.trackedInIssues = []
         self.comments = []
         self.timeline = []
+        self.organization = ""
+        self.repository = None
 
         if node is not None:
             self.load(node)
@@ -51,6 +55,7 @@ class Item(Base):
         self.closedAt = node.get("closedAt")
         self.projectNodeId = node.get("projectNodeId")
         self.author = User(node.get("author"))
+        self.organization = node.get("org")
 
         # Make sure the tracking issues are loaded correctly
         if node.get("trackedIssues") is not None:
@@ -75,6 +80,9 @@ class Item(Base):
         # Make sure our timeline is loaded correctly
         if node.get("timeline") is not None:
             self.load_timeline(node)
+
+        if node.get("repository") is not None:
+            self.repository = Repository(node.get("repository"))
 
     def load_assignees(self, node):
         """Load the assignees"""
@@ -141,6 +149,11 @@ class Item(Base):
 
             self.timeline.append(evt)
 
+    def load_repository(self, node):
+        """Load the repository data"""
+
+        self.repo = Repository(node)
+
     ## ----------------------------------------
 
     def get(self, org: str, repo: str, itemId: str):
@@ -151,29 +164,39 @@ class Item(Base):
             {"options": {"includeComments": True, "includeTimelineEvents": True}}
         )
 
+        template = self.jinja.get_template("partial/repository.graphql")
+        repo_query = template.render({"options": {}})
+
         # Get the partial query for an Item
         # itemQuery = self.get_query("partial/item")
         query = """
         {
         organization(login: "%s") {
             id
+            name
+            login
+            description
+            createdAt
+            location
+            url
             repository(name: "%s") {
-            id
-            issue(number: %s) {
                 %s
-            }
+                issue(number: %s) {
+                    %s
+                }
             }
         }
         }
         """ % (
             org,
             repo,
+            repo_query,
             itemId,
             item_query,
         )
         results = self.run_query(query)
-
         item = results.get("data").get("organization").get("repository").get("issue")
+
         # Set the base values
         self.load(item)
 
@@ -189,6 +212,14 @@ class Item(Base):
         # Set the labels
         for label in item.get("labels").get("edges"):
             self.labels.append(Label(label.get("node")))
+
+        # Set the organization
+        self.organization = Organization(results.get("data").get("organization"))
+
+        # And the repository
+        self.repository = Repository(
+            results.get("data").get("organization").get("repository")
+        )
 
     def update_field_value(self, project, field, input):
         """
@@ -356,4 +387,43 @@ class Item(Base):
             itemQuery
         )
         results = self.run_query(query, {"input": data})
+        return results
+
+    def add_label(self, label_name):
+        """Add a label"""
+
+        from github_projectv2.repository import Repository
+
+        if self.id == "" or self.id is None:
+            raise Exception("No ID set, fetch item (get) first")
+        if self.organization == "" or self.organization is None:
+            raise Exception("No org set, fetch item (get) first")
+        if self.repository == "" or self.repository is None:
+            raise Exception("No repo set, fetch item (get) first")
+
+        # Get the list of labels from the repository
+        repo = Repository()
+        repo.get(self.organization.name, self.repository.name)
+
+        label_id = None
+        for label in repo.labels:
+            if label.name == label_name:
+                label_id = label.id
+                break
+
+        if label_id is None:
+            raise Exception("Label %s not found" % label.name)
+
+        query = """
+        mutation {
+            addLabelsToLabelable(input: {labelableId: "%s", labelIds: ["%s"]}) {
+                clientMutationId
+            }
+        }
+        """ % (
+            self.id,
+            label_id,
+        )
+        results = self.run_query(query)
+
         return results
