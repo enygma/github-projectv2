@@ -1,0 +1,22 @@
+id
+name
+description
+isPrivate
+isArchived
+isDisabled
+isFork
+isLocked
+isMirror
+isTemplate
+labels(first:100) {
+    nodes {
+        id
+        name
+    }
+    edges {
+        node {
+            id
+            name
+        }
+    }
+}
