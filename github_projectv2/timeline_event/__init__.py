@@ -1,5 +1,6 @@
 from . import (
     AssignedEvent,
+    ClosedEvent,
     IssueComment,
     LabeledEvent,
     MentionedEvent,
