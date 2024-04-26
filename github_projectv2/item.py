@@ -445,6 +445,4 @@ class Item(Base):
             reason,
         )
         results = self.run_query(query)
-        print(results)
-
         return results
