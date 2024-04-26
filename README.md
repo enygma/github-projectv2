@@ -168,6 +168,10 @@ Where:
 Where:
 - `reason` (string, optional) either `COMPLETED` or `NOT_PLANNED` (default is `COMPLETED`)
 
+`make_comment(comment)`
+Where:
+- `comment` (string) is the contents of the comment
+
 ### Option
 The `Option` module is used to represent an option on a single-select field. It results in an instance with the following properties:
 

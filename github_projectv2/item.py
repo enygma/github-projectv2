@@ -446,3 +446,22 @@ class Item(Base):
         )
         results = self.run_query(query)
         return results
+
+    def make_comment(self, content):
+        """Make a comment"""
+
+        if self.id == "" or self.id is None:
+            raise Exception("No ID set, fetch item (get) first")
+
+        query = """
+        mutation {
+            addComment(input: {subjectId: "%s", body: "%s"}) {
+                clientMutationId
+            }
+        }
+        """ % (
+            self.id,
+            content,
+        )
+        results = self.run_query(query)
+        return results
