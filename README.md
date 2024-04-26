@@ -298,6 +298,8 @@ Several of the methods, including `item.get` and `project.get_items` (if the val
 - `UnlabeledEvent`
 - `MentionedEvent`
 - `SubscribedEvent`
+- `ReopenedEvent`
+- `ClosedEvent`
 
 You can find out more about what properties each of these support [in the GitHub API object documentation](https://docs.github.com/en/graphql/reference/objects).
 
