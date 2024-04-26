@@ -427,3 +427,24 @@ class Item(Base):
         results = self.run_query(query)
 
         return results
+
+    def close(self, reason="COMPLETED"):
+        """Close the issue"""
+
+        if self.id == "" or self.id is None:
+            raise Exception("No ID set, fetch item (get) first")
+
+        query = """
+        mutation {
+            closeIssue(input: {issueId: "%s", stateReason: %s}) {
+                clientMutationId
+            }
+        }
+        """ % (
+            self.id,
+            reason,
+        )
+        results = self.run_query(query)
+        print(results)
+
+        return results

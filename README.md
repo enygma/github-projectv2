@@ -164,6 +164,10 @@ Where:
 Where:
 - `label_name` is the "name" of the label to add (not the ID)
 
+`close(reason)`
+Where:
+- `reason` (string, optional) either `COMPLETED` or `NOT_PLANNED` (default is `COMPLETED`)
+
 ### Option
 The `Option` module is used to represent an option on a single-select field. It results in an instance with the following properties:
 
