@@ -7,9 +7,7 @@ timelineItems(first:100) {
             }
             {% include "partial/timeline-events/assigned.graphql" %}
             {% include "partial/timeline-events/unassigned.graphql" %}
-            ... on ClosedEvent {
-                    id
-                }
+            {% include "partial/timeline-events/closed.graphql" %}
             ... on CommentDeletedEvent {
                     id
                 }
@@ -67,9 +65,7 @@ timelineItems(first:100) {
             ... on RenamedTitleEvent {
                     id
                 }
-            ... on ReopenedEvent {
-                    id
-                }
+            {% include "partial/timeline-events/reopened.graphql" %}
             {% include "partial/timeline-events/subscribed.graphql" %}
             ... on TransferredEvent {
                     id

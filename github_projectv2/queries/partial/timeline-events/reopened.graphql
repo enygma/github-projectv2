@@ -1,0 +1,13 @@
+... on ReopenedEvent {
+    id
+    createdAt
+    closable {
+        closed
+        closedAt
+    }
+    stateReason
+    actor {
+        __typename
+        login
+    }
+}

@@ -1,0 +1,15 @@
+... on ClosedEvent {
+    id
+    createdAt
+    closable {
+        closed
+        closedAt
+    }
+    closer
+    stateReason
+    url
+    actor {
+        __typename
+        login
+    }
+}

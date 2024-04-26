@@ -1,11 +1,10 @@
 from github_projectv2.base import Base
-from github_projectv2.label import Label
 from github_projectv2.user import User
 
 
-class ClosedEvent(Base):
+class ReopenedEvent(Base):
     def __init__(self, node=None):
-        """Initialize the ClosedEvent object"""
+        """Initialize the ReopenedEvent object"""
 
         super().__init__()
 
@@ -15,7 +14,6 @@ class ClosedEvent(Base):
         self.closable = None
         self.closer = None
         self.stateReason = None
-        self.url = None
 
         if node is not None:
             self.load(node)
@@ -25,9 +23,7 @@ class ClosedEvent(Base):
         self.id = node.get("id")
         self.load_actor(node.get("actor"))
         self.closable = node.get("closable")
-        self.closer = node.get("closer")
         self.stateReason = node.get("stateReason")
-        self.url = node.get("url")
 
     def load_actor(self, author):
         """Load the author data"""

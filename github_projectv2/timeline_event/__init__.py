@@ -4,6 +4,7 @@ from . import (
     IssueComment,
     LabeledEvent,
     MentionedEvent,
+    ReopenedEvent,
     SubscribedEvent,
     UnassignedEvent,
     UnlabeledEvent,
