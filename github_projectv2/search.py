@@ -6,7 +6,9 @@ class Search(Base):
     def issues(self, filter):
         # Get the partial for the issue query
         template = self.jinja.get_template("partial/item.graphql")
-        itemQuery = template.render({"options": []})
+        item_query = template.render(
+            {"options": {"includeComments": True, "includeTimelineEvents": True}}
+        )
 
         query = """{
             search(
@@ -25,7 +27,7 @@ class Search(Base):
         }
         """ % (
             filter,
-            itemQuery,
+            item_query,
         )
         results = self.run_query(query)
 
