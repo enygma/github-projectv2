@@ -1,0 +1,12 @@
+... on CommentDeletedEvent {
+    id
+    createdAt
+    actor {
+        __typename
+        login
+    }
+    deletedCommentAuthor {
+        __typename
+        login
+    }
+}

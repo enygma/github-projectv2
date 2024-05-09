@@ -1,0 +1,25 @@
+... on RenamedTitleEvent {
+    id
+    createdAt
+    currentTitle
+    previousTitle
+    subject {
+        __typename
+        ... on Issue {
+            id
+            number
+            title
+            url
+        }
+        ... on PullRequest {
+            id
+            number
+            title
+            url
+        }
+    }
+    actor {
+        __typename
+        login
+    }
+}

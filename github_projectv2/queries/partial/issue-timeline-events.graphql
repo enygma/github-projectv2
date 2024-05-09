@@ -8,9 +8,7 @@ timelineItems(first:100) {
             {% include "partial/timeline-events/assigned.graphql" %}
             {% include "partial/timeline-events/unassigned.graphql" %}
             {% include "partial/timeline-events/closed.graphql" %}
-            ... on CommentDeletedEvent {
-                    id
-                }
+            {% include "partial/timeline-events/comment-deleted.graphql" %}
             ... on ConnectedEvent {
                     id
                 }
@@ -20,9 +18,7 @@ timelineItems(first:100) {
             ... on ConvertedToDiscussionEvent {
                     id
                 }
-            ... on CrossReferencedEvent {
-                    id
-                }
+            {% include "partial/timeline-events/cross-referenced.graphql" %}
             ... on DemilestonedEvent {
                     id
                 }
@@ -62,9 +58,7 @@ timelineItems(first:100) {
             ... on RemovedFromProjectEvent {
                     id
                 }
-            ... on RenamedTitleEvent {
-                    id
-                }
+            {% include "partial/timeline-events/renamed-title.graphql" %}
             {% include "partial/timeline-events/reopened.graphql" %}
             {% include "partial/timeline-events/subscribed.graphql" %}
             ... on TransferredEvent {
@@ -81,9 +75,7 @@ timelineItems(first:100) {
             ... on UnpinnedEvent {
                     id
                 }
-            ... on UnsubscribedEvent {
-                    id
-                }
+            {% include "partial/timeline-events/unsubscribed.graphql" %}
             ... on UserBlockedEvent {
                     id
                 }

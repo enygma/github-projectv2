@@ -1,0 +1,11 @@
+... on UnsubscribedEvent {
+    id
+    createdAt
+    actor {
+        login
+    }
+    subscribable {
+        __typename
+        id
+    }
+}

@@ -1,0 +1,42 @@
+... on CrossReferencedEvent {
+    id
+    actor {
+        login
+    }
+    createdAt
+    isCrossRepository
+    referencedAt
+    resourcePath
+    source {
+        __typename
+        ... on Issue {
+            id
+            number
+            title
+            url
+        }
+        ... on PullRequest {
+            id
+            number
+            title
+            url
+        }
+    }
+    target {
+        __typename
+        ... on Issue {
+            id
+            number
+            title
+            url
+        }
+        ... on PullRequest {
+            id
+            number
+            title
+            url
+        }
+    }
+    willCloseTarget
+    url
+}
