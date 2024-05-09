@@ -12,7 +12,8 @@ class LabeledEvent(Base):
         # Initialize the variables
         self.id = None
         self.actor = []
-        self.label = []
+        self.label = None
+        self.createdAt = None
 
         if node is not None:
             self.load(node)
@@ -20,6 +21,7 @@ class LabeledEvent(Base):
     def load(self, node):
         """Load the timeline item data"""
         self.id = node.get("id")
+        self.createdAt = node.get("createdAt")
         self.load_actor(node.get("actor"))
         self.label = Label(node.get("label"))
 
