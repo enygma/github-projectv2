@@ -42,7 +42,6 @@ class Item(Base):
 
     def load(self, node):
         """Load the item data"""
-        print("SELF.LOAD NODE")
 
         self.id = node.get("id")
         self.type = "ISSUE"
@@ -79,7 +78,6 @@ class Item(Base):
             self.load_comments(node)
 
         # Make sure our timeline is loaded correctly
-        print(node.get("timelineItems"))
         if node.get("timelineItems") is not None:
             self.load_timeline(node)
 
@@ -138,10 +136,8 @@ class Item(Base):
 
     def load_timeline(self, node):
         """Load the timeline"""
-        print("LOADING TIMELINE")
 
         if node.get("timelineItems") is None:
-            print("NO TIMELINE ITEMS")
             return
 
         # For each of the items in the timeline, make an object and push it into the list
