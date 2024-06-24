@@ -16,7 +16,7 @@ class Search(Base):
         item_query = template.render(
             {"options": {"includeComments": True, "includeTimelineEvents": True}}
         )
-        start = 10
+        start = 50
 
         query = """{
             search(
