@@ -1,4 +1,5 @@
 from . import (
+    AddedToProjectEvent,
     AssignedEvent,
     ClosedEvent,
     CommentDeletedEvent,
@@ -6,6 +7,8 @@ from . import (
     IssueComment,
     LabeledEvent,
     MentionedEvent,
+    MovedColumnsInProjectEvent,
+    ReferencedEvent,
     RenamedTitleEvent,
     ReopenedEvent,
     SubscribedEvent,
