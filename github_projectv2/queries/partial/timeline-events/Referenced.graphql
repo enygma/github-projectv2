@@ -1,0 +1,38 @@
+... on ReferencedEvent {
+    id
+    createdAt
+    commit {
+        id
+        message
+        abbreviatedOid
+        commitUrl
+    }
+    commitRepository {
+        id
+        name
+        owner {
+            login
+        }
+    }
+    actor {
+        __typename
+        login
+    }
+    isCrossRepository
+    isDirectReference
+    subject {
+        __typename
+        ... on Issue {
+            id
+            title
+            number
+            url
+        }
+        ... on PullRequest {
+            id
+            title
+            number
+            url
+        }
+    }
+}

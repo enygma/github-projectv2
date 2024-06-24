@@ -1,0 +1,24 @@
+... on AddedToProjectEvent {
+    id
+    createdAt
+    databaseId
+    projectColumnName
+    actor {
+        __typename
+        login
+    }
+    project {
+        id
+        name
+        number
+    }
+    projectCard {
+        id
+        note
+        state
+        column {
+            id
+            name
+        }
+    }
+}

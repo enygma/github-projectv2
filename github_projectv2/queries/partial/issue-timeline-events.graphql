@@ -2,9 +2,7 @@ timelineItems(first:100) {
 	edges {
 		node {
             __typename
-			... on AddedToProjectEvent {
-                id
-            }
+			{% include "partial/timeline-events/added-to-project.graphql" %}
             {% include "partial/timeline-events/assigned.graphql" %}
             {% include "partial/timeline-events/unassigned.graphql" %}
             {% include "partial/timeline-events/closed.graphql" %}
@@ -46,15 +44,11 @@ timelineItems(first:100) {
             ... on MilestonedEvent {
                     id
                 }
-            ... on MovedColumnsInProjectEvent {
-                    id
-                }
+            {% include "partial/timeline-events/moved-columns-in-project.graphql" %}
             ... on PinnedEvent {
                     id
                 }
-            ... on ReferencedEvent {
-                    id
-                }
+            {% include "partial/timeline-events/referenced.graphql" %}
             ... on RemovedFromProjectEvent {
                     id
                 }
