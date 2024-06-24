@@ -1,0 +1,25 @@
+... on MovedColumnsInProjectEvent {
+    id
+    createdAt
+    databaseId
+    previousProjectColumnName
+    project {
+        id
+        name
+        number
+    }
+    projectCard {
+        id
+        note
+        state
+        column {
+            id
+            name
+        }
+    }
+    projectColumnName
+    actor {
+        __typename
+        login
+    }
+}
