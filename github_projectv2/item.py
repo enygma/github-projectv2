@@ -465,3 +465,23 @@ class Item(Base):
         )
         results = self.run_query(query)
         return results
+
+    def assign(self, assignee):
+        """Assign the issue"""
+
+        if self.id == "" or self.id is None:
+            raise Exception("No ID set, fetch item (get) first")
+
+        query = """
+        mutation {
+            addAssigneesToAssignable(input: {assignableId: "%s", assigneeIds: ["%s"]}) {
+                clientMutationId
+            }
+        }
+        """ % (
+            self.id,
+            assignee.id,
+        )
+        results = self.run_query(query)
+        self.assignees.append(assignee)
+        return results
