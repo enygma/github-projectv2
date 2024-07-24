@@ -30,7 +30,17 @@ class Base:
         )
         if request.status_code == 200:
             # print("OUT: %s" % request.text)
-            return request.json()
+            reutrn_json = request.json()
+
+            # Throw an exception if the return data contains errors
+            if "errors" in reutrn_json:
+                raise Exception(
+                    "Query failed to run by returning code of {}. {}".format(
+                        request.status_code, reutrn_json
+                    )
+                )
+
+            return reutrn_json
         else:
             raise Exception(
                 "Query failed to run by returning code of {}. {}".format(
