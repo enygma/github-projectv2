@@ -3,6 +3,7 @@
     actor {
         login
         url
+        __typename
     }
     assignable {
         __typename

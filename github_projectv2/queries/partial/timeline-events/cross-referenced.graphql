@@ -2,6 +2,7 @@
     id
     actor {
         login
+        __typename
     }
     createdAt
     isCrossRepository

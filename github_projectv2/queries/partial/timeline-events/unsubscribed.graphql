@@ -3,6 +3,7 @@
     createdAt
     actor {
         login
+        __typename
     }
     subscribable {
         __typename
