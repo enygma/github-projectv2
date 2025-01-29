@@ -36,15 +36,19 @@ class Item(Base):
         self.timelineItems = []
         self.organization = ""
         self.repository = None
+        self.projectItems = []
+        self.repo = None
+        self.fields = []
 
         if node is not None:
             self.load(node)
 
     def load(self, node):
         """Load the item data"""
+        # print(node)
 
         self.id = node.get("id")
-        self.type = "ISSUE"
+        self.type = node.get("__typename")
         self.created = node.get("createdAt")
         self.title = node.get("title")
         self.number = node.get("number")
@@ -56,6 +60,9 @@ class Item(Base):
         self.projectNodeId = node.get("projectNodeId")
         self.author = User(node.get("author"))
         self.organization = node.get("org")
+        self.repo = node.get("repo")
+        self.fields = []
+        self.timelineItems = []
 
         # Make sure the tracking issues are loaded correctly
         if node.get("trackedIssues") is not None:
@@ -83,6 +90,17 @@ class Item(Base):
 
         if node.get("repository") is not None:
             self.repository = Repository(node.get("repository"))
+
+        projectItems = "projectItems" if self.type == "Issue" else "projectV2Items"
+        if node.get(projectItems) is not None:
+            for projectItem in node.get(projectItems).get("edges"):
+                # print(projectItem)
+                for field in projectItem.get("node").get("fieldValues").get("edges"):
+                    node = field.get("node")
+                    f = Field(node.get("field"))
+                    f.load_value(node)
+                    f.updated = node.get("updatedAt")
+                    self.fields.append(f)
 
     def load_assignees(self, node):
         """Load the assignees"""
@@ -136,6 +154,7 @@ class Item(Base):
 
     def load_timeline(self, node):
         """Load the timeline"""
+        self.timelineItems = []
 
         if node.get("timelineItems") is None:
             return
@@ -154,12 +173,21 @@ class Item(Base):
 
         self.repo = Repository(node)
 
+    def find_field_by_name(self, name):
+        """Find a field by name"""
+
+        for field in self.fields:
+            if field.name == name:
+                return field
+
+        return None
+
     ## ----------------------------------------
 
     def get(self, org: str, repo: str, itemId: str):
         """Get the item data"""
 
-        template = self.jinja.get_template("partial/item.graphql")
+        template = self.jinja.get_template("partial/issue_item.graphql")
         item_query = template.render(
             {"options": {"includeComments": True, "includeTimelineEvents": True}}
         )
@@ -195,6 +223,8 @@ class Item(Base):
             item_query,
         )
         results = self.run_query(query)
+        # print(results)
+
         item = results.get("data").get("organization").get("repository").get("issue")
 
         # Set the base values
@@ -220,6 +250,63 @@ class Item(Base):
         self.repository = Repository(
             results.get("data").get("organization").get("repository")
         )
+
+    def get_timeline(self):
+        """Get the timeline data"""
+
+        # Timeliines are only available for issues
+        if self.type != "Issue":
+            return []
+
+        if self.id == "" or self.id is None:
+            raise Exception("No ID set, fetch item (get) first")
+        if self.organization == "" or self.organization is None:
+            raise Exception("No org set, fetch item (get) first")
+        if self.repository == "" or self.repository is None:
+            raise Exception("No repo set, fetch item (get) first")
+
+        template = self.jinja.get_template("partial/issue-timeline-events.graphql")
+        timeline_query = template.render({"options": {}})
+
+        query = """
+        {
+            organization(login: "%s") {
+                id
+                name
+                repository(name: "%s") {
+                    issue(number: %s) {
+                        %s
+                    }
+                }
+            }
+        }
+        """ % (
+            self.organization.name,
+            self.repository.name,
+            self.number,
+            timeline_query,
+        )
+        # print(query)
+
+        results = self.run_query(query)
+        timeline = (
+            results.get("data")
+            .get("organization")
+            .get("repository")
+            .get("issue")
+            .get("timelineItems")
+        )
+
+        # print('TIMELINE')
+        # print(self.timelineItems)
+
+        # If they've already been loaded, reset them to an empty list
+        self.timelineItems = []
+        self.load_timeline(
+            results.get("data").get("organization").get("repository").get("issue")
+        )
+
+        return timeline
 
     def update_field_value(self, project, field, input):
         """
