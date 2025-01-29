@@ -1,22 +1,23 @@
 id
+__typename
 assignees(first: 100) {
-edges {
-    node {
-    id
-    email
-    login
-    name
+    edges {
+        node {
+        id
+        email
+        login
+        name
+        }
     }
 }
-}
 author {
-login
-... on User {
-    id
-    email
     login
-    name
-}
+    ... on User {
+        id
+        email
+        login
+        name
+    }
 }
 body
 closed
@@ -89,6 +90,23 @@ trackedIssues(first: 100) {
         number
         closed
     }
+    }
+}
+{% endif %}
+{% if options['includeFields'] %}
+projectItems(first: 100) {
+    edges {
+        node {
+            id
+            __typename
+            fieldValues(first: 30) {
+                edges {
+                    node {
+                        {% include "partial/fields.graphql" %}
+                    }
+                }
+            }
+        }
     }
 }
 {% endif %}

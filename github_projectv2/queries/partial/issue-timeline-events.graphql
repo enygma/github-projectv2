@@ -73,6 +73,9 @@ timelineItems(first:100) {
             ... on UserBlockedEvent {
                     id
                 }
+            ... on MovedColumnsInProjectEvent {
+                    id
+                }
         }
 	}
 }

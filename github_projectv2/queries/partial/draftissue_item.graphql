@@ -1,0 +1,42 @@
+id
+body
+createdAt
+title
+updatedAt
+assignees(first: 100) {
+    edges {
+        node {
+        id
+        email
+        login
+        name
+        }
+    }
+}
+creator {
+    login
+    ... on User {
+        id
+        email
+        login
+        name
+    }
+}
+{% if options['includeFields'] %}
+projectV2Items(first: 100) {
+    edges {
+        node {
+            __typename
+            id
+            type
+            fieldValues(first: 30) {
+                edges {
+                    node {
+                        {% include "partial/fields.graphql" %}
+                    }
+                }
+            }
+        }
+    }
+}
+{% endif %}
