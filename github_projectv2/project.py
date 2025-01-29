@@ -25,7 +25,7 @@ class Project(Base):
     url = ""
 
     itemEndCursor = ""
-    itemHasNextPage = False
+    itemHasNextPage = True
 
     def __init__(self, node=None):
         super().__init__()
@@ -48,7 +48,7 @@ class Project(Base):
         self.url = node.get("url")
 
         self.itemEndCursor = ""
-        self.itemHasNextPage = False
+        self.itemHasNextPage = True
 
         if node.get("fields") is not None:
             for field in node.get("fields"):
@@ -151,6 +151,7 @@ class Project(Base):
 
         # Get the page info to see about pagination
         pageInfo = results["data"]["organization"]["projectV2"]["items"]["pageInfo"]
+        # print(pageInfo)
         if pageInfo["hasNextPage"]:
             self.itemHasNextPage = True
             self.itemEndCursor = pageInfo["endCursor"]
@@ -168,6 +169,12 @@ class Project(Base):
             item["projectNodeId"] = results["data"]["organization"]["projectV2"][
                 "items"
             ]["nodes"][index]["id"]
+
+            # Add the organization to the item
+            item["org"] = org
+
+            # if self.type == "Issue":
+            # item["repository"] = Repository(
 
             node = Item(item)
             self.items.append(node)
