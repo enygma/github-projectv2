@@ -2,27 +2,32 @@
     organization(login: "{{ orgName }}") {
         id
         projectV2(number: {{ projectNumber }}) {
-        id
-        items(first: 100, after:AFTER) {
-            pageInfo {
-                hasNextPage
-                endCursor
-            }
-            nodes {
-                id
-                type
-                createdAt
-            }
-            edges {
-                node {
-                    content {
-                        ... on Issue {
-                            {% include "partial/item.graphql" %}
+            id
+            items(first: 100, after:AFTER) {
+                pageInfo {
+                    hasNextPage
+                    endCursor
+                }
+                nodes {
+                    id
+                    type
+                    createdAt
+                    updatedAt
+                }
+                edges {
+                    node {
+                        content {
+                            __typename
+                            ... on Issue {
+                                {% include "partial/issue_item.graphql" %}
+                            }
+                            ... on DraftIssue {
+                                {% include "partial/draftissue_item.graphql" %}
+                            }
                         }
                     }
                 }
             }
-        }
         }
     }
 }
