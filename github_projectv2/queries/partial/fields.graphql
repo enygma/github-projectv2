@@ -41,7 +41,6 @@ __typename
     }
 }
 ... on ProjectV2ItemFieldUserValue {
-    id
     field {
         ... on ProjectV2Field {
             id
@@ -51,7 +50,6 @@ __typename
     }
 }
 ... on ProjectV2ItemFieldRepositoryValue {
-    id
     field {
         ... on ProjectV2Field {
             id
