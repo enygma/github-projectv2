@@ -74,3 +74,24 @@ for item in project.get_items():
         if allClosed == True:
             item.close()
 ```
+
+### Getting all of the items in a project and checking their "Status" dropdown field
+```python
+p = Project()
+p.get("github", 19916)
+print(p.title)
+print(p.id)
+
+options = {
+    'includeFields': True
+}
+while p.itemHasNextPage == True:
+    p.get_items(options=options)
+    for item in p.items:
+        print(item.title)
+        print('%s : %s (%s)' % (
+            item.find_field_by_name('Status').name, 
+            item.find_field_by_name('Status').value.name, 
+            item.find_field_by_name('Status').updated)
+        )
+```

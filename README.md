@@ -116,7 +116,7 @@ Returns:
 **NOTE:** the `get_fields` and `get_items` require that the project is fetched using `get` first and will throw an error otherwise.
 
 ### Item
-The `Item` module is used to represent an item in a project (an issue record). It results in an instance with the following properties:
+The `Item` module is used to represent an item in a project (an issue or draft issue record). It results in an instance with the following properties:
 
 - `id` (string): internal ID of the item record
 - `type` (string): type of item (ex: `ISSUE`)
@@ -171,6 +171,10 @@ Where:
 `make_comment(comment)`
 Where:
 - `comment` (string) is the contents of the comment
+
+`find_field_by_name(name)`
+Where:
+- `name` (string) is the name of the field to find, works when pulled via projects and `get_items` (`None` if field not found)
 
 ### Option
 The `Option` module is used to represent an option on a single-select field. It results in an instance with the following properties:
@@ -314,7 +318,7 @@ In some methods (such as `project.get_items`) use can used named arguments to co
 - `includeTrackedInIssues`: Includes information about the other item(s) the current item is tracked in (Values: `True`/`False`)
 - `includeTrackedIssues`: Include information about the item(s) being tracked by this item  (Values: `True`/`False`)
 - `includeTimelineEvents`: Include the timeline events that were taken on the item (Values: `True`/`False`)
-
+- `includeFields`: Include the field information in the item, works when pulled via a project (Values: `True`/`False`)
 
 ### Development
 
