@@ -8,7 +8,7 @@ class Search(Base):
 
         self.first = 10
         self.itemEndCursor = ""
-        self.hasNextPage = False
+        self.hasNextPage = True
 
     def issues(self, **kwargs):
         """Get the issues for the search"""
