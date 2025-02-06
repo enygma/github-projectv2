@@ -12,7 +12,7 @@ class Search(Base):
 
     def issues(self, filter):
         # Get the partial for the issue query
-        template = self.jinja.get_template("partial/item.graphql")
+        template = self.jinja.get_template("partial/issue_item.graphql")
         item_query = template.render(
             {"options": {"includeComments": True, "includeTimelineEvents": True}}
         )

@@ -425,7 +425,7 @@ class Item(Base):
             else "",
             repository.id,
             data.get("title"),
-            self.get_query("partial/item"),
+            self.get_query("partial/issue_item"),
         )
 
         results = self.run_query(query)
@@ -459,7 +459,7 @@ class Item(Base):
             raise Exception("No ID set")
 
         data = {"id": self.id, "title": self.title, "body": self.body}
-        itemQuery = self.get_query("partial/item")
+        itemQuery = self.get_query("partial/issue_item")
 
         query = """
         mutation ($input:UpdateIssueInput!){
