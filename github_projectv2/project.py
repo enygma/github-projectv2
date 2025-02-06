@@ -140,15 +140,11 @@ class Project(Base):
         if org is None:
             org = self.org
 
-        print(options)
-
         # Get the template and build the query
         template = self.jinja.get_template("project/get_items.graphql")
         query = template.render(
             {"orgName": org, "projectNumber": self.number, "options": options}
         )
-
-        print(query)
 
         # Replace for our "AFTER" so we can paginate
         query = query.replace(
