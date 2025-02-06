@@ -281,7 +281,8 @@ The `Search` module is used to make searches using the `search()` method on the 
 #### Methods
 `issues`
 Where:
-- `filter` (string): the search filter string
+- `filter` (string): the search filter string, passed using nameed parameter `filter=...`
+- `slim` (string): tell the search method to pull a "slim" version of the issues
 Returns:
 - Set of `Item` class objects populated with matching issue data
 
@@ -319,6 +320,7 @@ In some methods (such as `project.get_items`) use can used named arguments to co
 - `includeTrackedIssues`: Include information about the item(s) being tracked by this item  (Values: `True`/`False`)
 - `includeTimelineEvents`: Include the timeline events that were taken on the item (Values: `True`/`False`)
 - `includeFields`: Include the field information in the item, works when pulled via a project (Values: `True`/`False`)
+- `useSlimIssue`: Return the items with the "slim" version of the results (Values: `True`/`False`)
 
 ### Development
 

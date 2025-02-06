@@ -19,7 +19,11 @@
                         content {
                             __typename
                             ... on Issue {
-                                {% include "partial/issue_item.graphql" %}
+                                {% if options['useSlimIssue'] %}
+                                    {% include "partial/issue_item_slim.graphql" %}
+                                {% else %}
+                                    {% include "partial/issue_item.graphql" %}
+                                {% endif %}
                             }
                             ... on DraftIssue {
                                 {% include "partial/draftissue_item.graphql" %}

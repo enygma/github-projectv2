@@ -128,6 +128,9 @@ class Project(Base):
         else:
             options = {}
 
+        if "useSlimIssue" not in options:
+            options["useSlimIssue"] == False
+
         if org is None and self.org is None:
             raise Exception("Organization not set")
 
@@ -137,11 +140,15 @@ class Project(Base):
         if org is None:
             org = self.org
 
+        print(options)
+
         # Get the template and build the query
         template = self.jinja.get_template("project/get_items.graphql")
         query = template.render(
             {"orgName": org, "projectNumber": self.number, "options": options}
         )
+
+        print(query)
 
         # Replace for our "AFTER" so we can paginate
         query = query.replace(

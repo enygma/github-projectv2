@@ -10,12 +10,28 @@ class Search(Base):
         self.itemEndCursor = ""
         self.hasNextPage = False
 
-    def issues(self, filter):
+    def issues(self, **kwargs):
+        """Get the issues for the search"""
+
+        filter = kwargs.get("filter", "")
+        options = {
+            "includeComments": True,
+            "includeTimelineEvents": True,
+            "useSlimIssue": False,
+        }
+        # If the slim option is passed, set the slim flag to True, otherwise set it to False
+        slim = kwargs.get("slim", False)
+        if slim:
+            options["useSlimIssue"] = True
+
         # Get the partial for the issue query
-        template = self.jinja.get_template("partial/issue_item.graphql")
-        item_query = template.render(
-            {"options": {"includeComments": True, "includeTimelineEvents": True}}
+        issue_template = (
+            "partial/issue_item_slim.graphql"
+            if options["useSlimIssue"] == True
+            else "partial/issue_item.graphql"
         )
+        template = self.jinja.get_template(issue_template)
+        item_query = template.render({"options": options})
         start = 50
 
         query = """{
