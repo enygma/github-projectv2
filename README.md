@@ -77,6 +77,10 @@ Where:
 Where:
 - `org` is the name of the organization (optional)
 
+`get_field(name)`: Get a single field from a project
+Where:
+- `name` is the name of the field (title)
+
 `get_items(args)`: Get the items currently in the project (issues)
 Where `args` are one or more named variables:
 - `org` (string) is the name of the organization
@@ -189,6 +193,12 @@ The `Field` module is used to represent a field in the project. It results in an
 - `name` (string): name of the field
 - `dataType` (string): type of field (Ex: `TEXT` or `SINGLE_SELECT`)
 - `options` (list): when the `dataType` is `SINGLE_SELECT` the options array will be populated with the options records as instances of `Option`
+
+#### Methods
+
+`find_option(name)`
+Where:
+- `name` is the name (value) of the option. NOTE: only works with single select fields and will throw an error otherwise
 
 ### Label
 The `Label` module is used to represent a label on an item. It results in an instance with the following properties:

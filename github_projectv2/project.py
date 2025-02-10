@@ -116,6 +116,15 @@ class Project(Base):
 
         return returnFields
 
+    def get_field(self, name):
+        """Get just one field"""
+
+        fields = self.get_fields()
+        for field in fields:
+            if field.name == name:
+                return field
+        return None
+
     def get_items(self, **kwargs):
 
         if "org" in kwargs:
@@ -129,7 +138,7 @@ class Project(Base):
             options = {}
 
         if "useSlimIssue" not in options:
-            options["useSlimIssue"] == False
+            options["useSlimIssue"] = False
 
         if org is None and self.org is None:
             raise Exception("Organization not set")

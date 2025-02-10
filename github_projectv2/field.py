@@ -34,3 +34,13 @@ class Field(Base):
         if self.dataType == "TEXT":
             if node.get("text") is not None:
                 self.value = node.get("text")
+
+    def find_option(self, name):
+        if self.dataType != "SINGLE_SELECT":
+            raise Exception("This field is not a single select field")
+
+        for option in self.options:
+            if option.name == name:
+                return option
+
+        return None
