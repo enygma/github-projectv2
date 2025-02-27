@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "github-projectv2"
-version = "0.7.8"
+version = "0.7.9"
 description = ""
 authors = ["Chris Cornutt <enygma@github.com>"]
 readme = "README.md"
