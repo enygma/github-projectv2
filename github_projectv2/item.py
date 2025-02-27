@@ -572,3 +572,25 @@ class Item(Base):
         results = self.run_query(query)
         self.assignees.append(assignee)
         return results
+
+    def add_subissue(self, subissue):
+        """Add a subissue"""
+
+        if self.id == "" or self.id is None:
+            raise Exception("No ID set, fetch item (get) first")
+
+        if subissue.id == "" or subissue.id is None:
+            raise Exception("No ID set, fetch item (get) first")
+
+        query = """
+        mutation {
+            addSubIssue(input: {issueId: "%s", subIssueId: "%s"}) {
+                clientMutationId
+            }
+        }
+        """ % (
+            self.id,
+            subissue.id,
+        )
+        results = self.run_query(query)
+        return results
