@@ -180,6 +180,10 @@ Where:
 Where:
 - `name` (string) is the name of the field to find, works when pulled via projects and `get_items` (`None` if field not found)
 
+`add_subissue(item)`
+Where:
+- `issue` (Item) is an Item instance of the issue you want to add to the current one as a sub-issue
+
 ### Option
 The `Option` module is used to represent an option on a single-select field. It results in an instance with the following properties:
 
@@ -256,6 +260,19 @@ Where:
 
 **NOTE:** `get_milestones` requires that `get()` is called first
 
+### Comment
+The `Comment` module is used to represent a comment instance on an item. It results in an instance with the following properties:
+
+- `id` (string) internal ID of the comment record
+- `body` (string) the contents of the comment body
+- `updatedAt` (string) the timestamp when the comment was created
+- `author` (User) a User object instance for the author of the comment
+
+#### Methods
+`delete()`
+Where:
+    It will delete the comment represented by the current instance
+
 ### Organization
 The `Organization` module is used to represent an organization in the system. It results in an instance with the following properties:
 
@@ -319,6 +336,7 @@ Several of the methods, including `item.get` and `project.get_items` (if the val
 - `SubscribedEvent`
 - `ReopenedEvent`
 - `ClosedEvent`
+- `PinnedEvent`
 
 You can find out more about what properties each of these support [in the GitHub API object documentation](https://docs.github.com/en/graphql/reference/objects).
 
