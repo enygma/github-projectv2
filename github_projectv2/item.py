@@ -223,7 +223,7 @@ class Item(Base):
             item_query,
         )
         results = self.run_query(query)
-        # print(results)
+        print(results)
 
         item = results.get("data").get("organization").get("repository").get("issue")
 

@@ -1,0 +1,16 @@
+... on PinnedEvent {
+    id
+    actor {
+        __typename
+        login
+        url
+        resourcePath
+    }
+    issue {
+        id
+        number
+        title
+        url
+    }
+    createdAt
+}

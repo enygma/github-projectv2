@@ -45,9 +45,7 @@ timelineItems(first:100) {
                     id
                 }
             {% include "partial/timeline-events/moved-columns-in-project.graphql" %}
-            ... on PinnedEvent {
-                    id
-                }
+            {% include "partial/timeline-events/pinned.graphql" %}
             {% include "partial/timeline-events/referenced.graphql" %}
             ... on RemovedFromProjectEvent {
                     id
