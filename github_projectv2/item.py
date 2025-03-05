@@ -39,6 +39,7 @@ class Item(Base):
         self.projectItems = []
         self.repo = None
         self.fields = []
+        self.subissues = []
 
         if node is not None:
             self.load(node)
@@ -63,6 +64,9 @@ class Item(Base):
         self.repo = node.get("repo")
         self.fields = []
         self.timelineItems = []
+
+        if node.get("subissues") is not None:
+            self.organization = node.get("subissues")
 
         # Make sure the tracking issues are loaded correctly
         if node.get("trackedIssues") is not None:
@@ -594,3 +598,38 @@ class Item(Base):
         )
         results = self.run_query(query)
         return results
+
+    def get_subissues(self):
+        """Get the subissues"""
+
+        if self.id == "" or self.id is None:
+            raise Exception("No ID set, fetch item (get) first")
+
+        template = self.jinja.get_template("partial/issue_item.graphql")
+        item_query = template.render({"options": {}})
+
+        query = """
+        {
+            node(id: "%s") {
+                ... on Issue {
+                    subIssues(first: 100) {
+                        edges {
+                            node {
+                                %s
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        """ % (
+            self.id,
+            item_query,
+        )
+        results = self.run_query(query)
+
+        subissue_list = results["data"]["node"]["subIssues"]["edges"]
+        for subissue in subissue_list:
+            self.subissues.append(Item(subissue.get("node")))
+
+        return self.subissues
