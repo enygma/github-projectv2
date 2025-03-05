@@ -1,0 +1,14 @@
+... on SubIssueRemovedEvent {
+    id
+    createdAt
+    actor {
+        __typename
+        login
+    }
+    subIssue {
+        id
+        title
+        number
+        url
+    }
+}

@@ -12,6 +12,8 @@ from . import (
     ReferencedEvent,
     RenamedTitleEvent,
     ReopenedEvent,
+    SubIssueAddedEvent,
+    SubIssueRemovedEvent,
     SubscribedEvent,
     UnassignedEvent,
     UnlabeledEvent,

@@ -7,6 +7,8 @@ timelineItems(first:100) {
             {% include "partial/timeline-events/unassigned.graphql" %}
             {% include "partial/timeline-events/closed.graphql" %}
             {% include "partial/timeline-events/comment-deleted.graphql" %}
+            {% include "partial/timeline-events/subissue-added.graphql" %}
+            {% include "partial/timeline-events/subissue-removed.graphql" %}
             ... on ConnectedEvent {
                     id
                 }
