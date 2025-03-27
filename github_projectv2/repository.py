@@ -45,6 +45,8 @@ class Repository(Base):
             self.milestones = node.get("milestones")
 
     def get(self, org, repo):
+        from github_projectv2.organization import Organization
+
         self.org = org
         self.repo = repo
 
@@ -55,6 +57,12 @@ class Repository(Base):
         {
         organization(login: "%s") {
             id
+            name
+            login
+            description
+            createdAt
+            location
+            url
             repository(name: "%s") {
                 %s
             }
@@ -73,6 +81,11 @@ class Repository(Base):
         for label in repository.get("labels").get("nodes"):
             labels.append(Label(label))
         repository["labels"] = labels
+
+        # Load the organization
+        org = Organization()
+        org.load(results["data"]["organization"])
+        repository["organization"] = org
 
         # Load into this object
         self.load(repository)
@@ -119,3 +132,59 @@ class Repository(Base):
             self.milestones.append(node)
 
         return returnItems
+
+    def get_labels(self):
+        if self.organization == "":
+            raise Exception(
+                'Organization is required, call "get" to load the repository first.'
+            )
+
+        query = """
+        {
+            organization(login: "%s") {
+                id
+                repository(name: "%s") {
+                    id
+                    labels(first: 100) {
+                        nodes {
+                            id
+                            name
+                            description
+                            url
+                            color
+                        }
+                    }
+                }
+            }
+        }
+        """ % (
+            self.organization.login,
+            self.name,
+        )
+        results = self.run_query(query)
+        labels = results["data"]["organization"]["repository"]["labels"]["nodes"]
+
+        returnItems = []
+        for label in labels:
+            node = Label(label)
+            returnItems.append(node)
+            self.labels.append(node)
+
+        return returnItems
+
+    # def get_file(self, path):
+    #     print("GET FILE")
+    #     print(path)
+
+    #     print(self.organization)
+
+    #     if self.organization == None:
+    #         raise Exception("Organization is required, call get to load the repository first.")
+
+    #     template = self.jinja.get_template("repository/get_file.graphql")
+    #     query = template.render(
+    #         {"org": self.organization.login, "repoName": self.name, "path": path}
+    #     )
+    #     print(query)
+    #     results = self.run_query(query)
+    #     print(results)

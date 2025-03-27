@@ -40,6 +40,7 @@ class Item(Base):
         self.repo = None
         self.fields = []
         self.subissues = []
+        self.template = None
 
         if node is not None:
             self.load(node)
@@ -64,6 +65,7 @@ class Item(Base):
         self.repo = node.get("repo")
         self.fields = []
         self.timelineItems = []
+        self.template = None
 
         if node.get("subissues") is not None:
             self.organization = node.get("subissues")
@@ -404,35 +406,74 @@ class Item(Base):
             'milestoneId': 'MDk6TWlsZXN0b25lMjM=',
             'title': 'This is the title'
         }
+        "assignees" is an optional value, a set of usernames. If provided it will be translated into assigneeIds
+        "labels" is an optional value, a set of label strings. If provided it will be translated into labelIds
         """
 
-        if data.get("assigneeIds") is not None:
-            assigneeIds = self.convert_quotes(data.get("assigneeIds"))
+        # If the repository value is a string, then we need to create a new Repository object
+        if isinstance(repository, str):
+            repository = Repository()
+            repository.get(repository)
+
+        # Check to see if the "assignees" value is set and make sure the assigneeIds isn't. AssigneeIds overwrites "assignees" If so translate them into IDs.
+        assigneeIds = []
+        if data.get("assigneesId") is None and data.get("assignees") is not None:
+            # MAek sure the assignees are a list
+            if not isinstance(data.get("assignees"), list):
+                raise Exception("Assignees must be a list")
+
+            for assignee in data.get("assignees"):
+                user = User()
+                user.get(assignee)
+                assigneeIds.append(user.id)
+
+        elif data.get("assigneeIds") is not None:
+            assigneeIds = data.get("assigneeIds")
+
+        # If the "labels" value is set and "labelIds" isn't, translate them into IDs
+        labelIds = []
+        if data.get("labels") is not None and data.get("labelIds") is None:
+            if not isinstance(data.get("labels"), list):
+                raise Exception("Labels must be a list")
+
+            self.labels = repository.get_labels()
+            for label in self.labels:
+                if label.name in data.get("labels"):
+                    labelIds.append(label.id)
+
+        elif data.get("labelIds") is not None:
+            labelIds = data.get("labelIds")
+
+        template = self.jinja.get_template("partial/issue_item.graphql")
+        item_query = template.render({"options": []})
 
         query = """
-        mutation {
-            createIssue(input: {assigneeIds: %s, body: "%s",%s labelIds: %s, %s, repositoryId: "%s", title: "%s"}) {
+        mutation ($input:CreateIssueInput!) {
+            createIssue(input: $input) {
                 clientMutationId,
                 issue {
                     %s
                 }
             }
         }""" % (
-            assigneeIds,
-            data.get("body"),
-            'issueTemplate: "%s",' % data.get("issueTemplate")
-            if data.get("issueTemplate")
-            else "",
-            data.get("labelIds") if data.get("labelIds") else "[]",
-            'milestoneId: "%s",' % data.get("milestoneId")
-            if data.get("milestoneId")
-            else "",
-            repository.id,
-            data.get("title"),
-            self.get_query("partial/issue_item"),
+            item_query,
         )
 
-        results = self.run_query(query)
+        # {assigneeIds: $assignees, body: $body,%s labelIds: $labelIds, %s repositoryId: $repositoryId, title: $title}
+        input = {
+            "assigneeIds": assigneeIds,
+            "body": data.get("body"),
+            "repositoryId": repository.id,
+            "title": data.get("title"),
+            "labelIds": labelIds,
+        }
+        if data.get("issueTemplate"):
+            input["issueTemplate"] = data.get("issueTemplate")
+
+        if data.get("milestoneId"):
+            input["milestoneId"] = data.get("milestoneId")
+
+        results = self.run_query(query, {"input": input})
 
         item = Item(results.get("data").get("createIssue").get("issue"))
         return item

@@ -162,7 +162,19 @@ Where:
 `create(repository, data)`
 Where:
 - `repository`: a `Repository` instance
-- `data`: a data set containing: `assigneeIds`, `body`, `title` (optional: `labelIds`, `milestoneId`)
+- `data`: a data set containing the details of the issue you want to create (see below for more detail)
+
+The following are possible values for the `data` to contain:
+
+- `body` (string, required): the body contents for the issue
+- `title` (string, required): the title of the issue
+- `assigneeIds` (list, optional): a set of IDs relating to the users you want to assign
+- `assignees` (list, optional): a set of usernames for the users you want to assign
+- `labelIds` (list, optional): a set of IDs related to the labels you want to apply to the issue
+- `labels`(list, optional): a set of label names to apply to the issue
+- `milestoneId` (string, optional): an ID related to the milestone to link to the issues
+
+> Note: if `assigneeIds` is set, it will override `assignees`. Likewise, if `labelIds` is set, it will override the `labels` value
 
 `add_label(label_name)`
 Where:
