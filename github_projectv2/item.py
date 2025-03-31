@@ -475,8 +475,8 @@ class Item(Base):
 
         results = self.run_query(query, {"input": input})
 
-        item = Item(results.get("data").get("createIssue").get("issue"))
-        return item
+        self.load(results.get("data").get("createIssue").get("issue"))
+        return self
 
     def close(self):
         """Close the issue"""
