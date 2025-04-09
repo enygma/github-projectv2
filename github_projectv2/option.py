@@ -9,5 +9,6 @@ class Option(Base):
     def __init__(self, node):
         super().__init__()
 
-        self.id = node.get("id")
-        self.name = node.get("name")
+        if node is not None:
+            self.id = node.get("id")
+            self.name = node.get("name")

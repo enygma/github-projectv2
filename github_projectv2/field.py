@@ -13,7 +13,9 @@ class Field(Base):
 
     def __init__(self, node):
         super().__init__()
-        self.load(node)
+
+        if node is not None:
+            self.load(node)
 
     def load(self, node):
         self.id = node.get("id")

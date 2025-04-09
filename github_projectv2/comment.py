@@ -8,14 +8,14 @@ class Comment(Base):
 
         super().__init__()
 
-        # Initialize the variables
-        self.id = None
-        self.body = ""
-        self.created = node.get("createdAt")
-        self.updatedAt = node.get("updatedAt")
-        self.author = User(node.get("author"))
-
         if node is not None:
+            # Initialize the variables
+            self.id = None
+            self.body = ""
+            self.created = node.get("createdAt")
+            self.updatedAt = node.get("updatedAt")
+            self.author = User(node.get("author"))
+
             self.load(node)
 
     def load(self, node):

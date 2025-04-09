@@ -58,3 +58,19 @@ __typename
         }
     }
 }
+... on ProjectV2ItemFieldMilestoneValue {
+    field {
+        ... on ProjectV2Field {
+            id
+            name
+            dataType
+        }
+    }
+    milestone {
+        id
+        title
+        url
+        number
+        closed
+    }
+}
