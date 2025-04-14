@@ -8,6 +8,8 @@ from . import (
     LabeledEvent,
     MentionedEvent,
     MovedColumnsInProjectEvent,
+    ParentIssueAddedEvent,
+    ParentIssueRemovedEvent,
     PinnedEvent,
     ReferencedEvent,
     RenamedTitleEvent,
