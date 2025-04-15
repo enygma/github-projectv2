@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "github-projectv2"
-version = "0.7.15"
+version = "0.7.16"
 description = ""
 authors = ["Chris Cornutt <enygma@github.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.13"
 
 
 [tool.poetry.group.dev.dependencies]
