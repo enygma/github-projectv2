@@ -5,6 +5,8 @@ from . import (
     CommentDeletedEvent,
     CrossReferencedEvent,
     IssueComment,
+    IssueTypeAddedEvent,
+    IssueTypeChangedEvent,
     LabeledEvent,
     MentionedEvent,
     MovedColumnsInProjectEvent,
