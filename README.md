@@ -339,16 +339,29 @@ Resource: [https://mathspp.com/blog/how-to-create-a-python-package-in-2022](http
 ### Timeline Events
 Several of the methods, including `item.get` and `project.get_items` (if the value for `includeTimelineEvents` is `True`) will also pull in the timeline events for an item. This timeline provides details about actions like: when an issue was labeled, when someone subscribed to an issue, and when a user was mentioned in an issue. We currently support several event types:
 
+- `AddedToProjectEvent`
 - `AssignedEvent`
-- `UnassignedEvent`
-- `IssueComment`
-- `LabeledEvent`
-- `UnlabeledEvent`
-- `MentionedEvent`
-- `SubscribedEvent`
-- `ReopenedEvent`
 - `ClosedEvent`
+- `CommentDeletedEvent`
+- `CrossReferencedEvent`
+- `IssueComment`
+- `IssueTypeAddedEvent`
+- `IssueTypeChangedEvent`
+- `LabeledEvent`
+- `MentionedEvent`
+- `MovedColumnsInProjectEvent`
+- `ParentIssueAddedEvent`
+- `ParentIssueRemovedEvent`
 - `PinnedEvent`
+- `ReferencedEvent`
+- `RenamedTitleEvent`
+- `ReopenedEvent`
+- `SubIssueAddedEvent`
+- `SubIssueRemovedEvent`
+- `SubscribedEvent`
+- `UnassignedEvent`
+- `UnlabeledEvent`
+- `UnsubscribedEvent`
 
 You can find out more about what properties each of these support [in the GitHub API object documentation](https://docs.github.com/en/graphql/reference/objects).
 
