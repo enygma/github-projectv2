@@ -60,6 +60,7 @@ timelineItems(first:100) {
                 }
             {% include "partial/timeline-events/subscribed.graphql" %}
             {% include "partial/timeline-events/unlabeled.graphql" %}
+            {% include "partial/timeline-events/transferred.graphql" %}
             ... on UnlockedEvent {
                     id
                 }

@@ -1,0 +1,17 @@
+... on TransferredEvent {
+    id
+    createdAt
+    actor {
+        login
+        __typename
+    }
+    fromRepository {
+        __typename
+        id
+        url
+        name
+        owner {
+            login
+        }
+    }
+}

@@ -8,6 +8,8 @@ class TransferredEvent(Base):
 
         super().__init__(node)
 
+        print(node)
+
         # Initialize the variables
         self.id = None
         self.actor = None
