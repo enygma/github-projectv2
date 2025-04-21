@@ -1,7 +1,6 @@
 from unittest import TestCase, main, mock
 
 import requests_mock
-
 from projectv2.field import Field
 from projectv2.project import Project
 
