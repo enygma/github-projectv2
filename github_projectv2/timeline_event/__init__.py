@@ -19,6 +19,7 @@ from . import (
     SubIssueAddedEvent,
     SubIssueRemovedEvent,
     SubscribedEvent,
+    TransferredEvent,
     UnassignedEvent,
     UnlabeledEvent,
     UnsubscribedEvent,
