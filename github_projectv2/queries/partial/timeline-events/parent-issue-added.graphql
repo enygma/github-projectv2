@@ -1,0 +1,26 @@
+... on ParentIssueAddedEvent {
+    id
+    createdAt
+    actor {
+        __typename
+        login
+    }
+    parent {
+        id
+        number
+        title
+        url
+        bodyText
+        bodyHTML
+        author {
+            login
+            url
+            avatarUrl
+        }
+        state
+        closed
+        locked
+        createdAt
+        updatedAt
+    }
+}

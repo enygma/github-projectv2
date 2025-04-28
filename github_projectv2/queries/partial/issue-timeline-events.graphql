@@ -9,6 +9,21 @@ timelineItems(first:100) {
             {% include "partial/timeline-events/comment-deleted.graphql" %}
             {% include "partial/timeline-events/subissue-added.graphql" %}
             {% include "partial/timeline-events/subissue-removed.graphql" %}
+            {% include "partial/timeline-events/cross-referenced.graphql" %}
+            {% include "partial/timeline-events/issue-comment.graphql" %}
+            {% include "partial/timeline-events/labeled.graphql" %}
+            {% include "partial/timeline-events/mentioned.graphql" %}
+            {% include "partial/timeline-events/moved-columns-in-project.graphql" %}
+            {% include "partial/timeline-events/pinned.graphql" %}
+            {% include "partial/timeline-events/parent-issue-added.graphql" %}
+            {% include "partial/timeline-events/referenced.graphql" %}
+            {% include "partial/timeline-events/renamed-title.graphql" %}
+            {% include "partial/timeline-events/reopened.graphql" %}
+            {% include "partial/timeline-events/subscribed.graphql" %}
+            {% include "partial/timeline-events/subscribed.graphql" %}
+            {% include "partial/timeline-events/unlabeled.graphql" %}
+            {% include "partial/timeline-events/transferred.graphql" %}
+            {% include "partial/timeline-events/unsubscribed.graphql" %}
             ... on ConnectedEvent {
                     id
                 }
@@ -18,15 +33,13 @@ timelineItems(first:100) {
             ... on ConvertedToDiscussionEvent {
                     id
                 }
-            {% include "partial/timeline-events/cross-referenced.graphql" %}
+
             ... on DemilestonedEvent {
                     id
                 }
             ... on DisconnectedEvent {
                     id
                 }
-            {% include "partial/timeline-events/issue-comment.graphql" %}
-            {% include "partial/timeline-events/labeled.graphql" %}
             ... on LockedEvent {
                     id
                     createdAt
@@ -42,25 +55,16 @@ timelineItems(first:100) {
             ... on MarkedAsDuplicateEvent {
                     id
                 }
-            {% include "partial/timeline-events/mentioned.graphql" %}
+            
             ... on MilestonedEvent {
                     id
                 }
-            {% include "partial/timeline-events/moved-columns-in-project.graphql" %}
-            {% include "partial/timeline-events/pinned.graphql" %}
-            {% include "partial/timeline-events/referenced.graphql" %}
             ... on RemovedFromProjectEvent {
                     id
                 }
-            {% include "partial/timeline-events/renamed-title.graphql" %}
-            {% include "partial/timeline-events/reopened.graphql" %}
-            {% include "partial/timeline-events/subscribed.graphql" %}
             ... on TransferredEvent {
                     id
                 }
-            {% include "partial/timeline-events/subscribed.graphql" %}
-            {% include "partial/timeline-events/unlabeled.graphql" %}
-            {% include "partial/timeline-events/transferred.graphql" %}
             ... on UnlockedEvent {
                     id
                 }
@@ -70,7 +74,6 @@ timelineItems(first:100) {
             ... on UnpinnedEvent {
                     id
                 }
-            {% include "partial/timeline-events/unsubscribed.graphql" %}
             ... on UserBlockedEvent {
                     id
                 }
