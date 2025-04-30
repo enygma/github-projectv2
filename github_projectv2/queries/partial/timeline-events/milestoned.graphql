@@ -1,0 +1,10 @@
+... on MilestonedEvent {
+    id
+    createdAt
+    actor {
+        __typename
+        login
+    }
+    milestoneTitle
+    subject
+}

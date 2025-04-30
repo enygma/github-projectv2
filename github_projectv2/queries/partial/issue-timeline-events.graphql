@@ -13,6 +13,8 @@ timelineItems(first:100) {
             {% include "partial/timeline-events/issue-comment.graphql" %}
             {% include "partial/timeline-events/labeled.graphql" %}
             {% include "partial/timeline-events/mentioned.graphql" %}
+            {% include "partial/timeline-events/milestoned.graphql" %}
+            {% include "partial/timeline-events/demilestoned.graphql" %}
             {% include "partial/timeline-events/moved-columns-in-project.graphql" %}
             {% include "partial/timeline-events/pinned.graphql" %}
             {% include "partial/timeline-events/parent-issue-added.graphql" %}
