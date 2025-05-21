@@ -1,0 +1,16 @@
+... on IssueTypeChangedEvent {
+    id
+    actor {
+        login
+        __typename
+    }
+    createdAt
+    issueType {
+        id
+        name
+    }
+    prevIssueType {
+        id
+        name
+    }
+}
