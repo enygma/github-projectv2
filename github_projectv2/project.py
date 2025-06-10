@@ -182,11 +182,9 @@ class Project(Base):
                 "items"
             ]["nodes"][index]["id"]
 
-            # Add the organization to the item
+            # Add the organization and project number to the item
             item["org"] = org
-
-            # if self.type == "Issue":
-            # item["repository"] = Repository(
+            item["projectId"] = self.id
 
             node = Item(item)
             self.items.append(node)

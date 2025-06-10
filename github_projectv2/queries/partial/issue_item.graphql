@@ -99,6 +99,11 @@ projectItems(first: 100) {
         node {
             id
             __typename
+            project {
+                id
+                title
+                number
+            }
             fieldValues(first: 30) {
                 edges {
                     node {

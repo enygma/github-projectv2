@@ -66,6 +66,7 @@ class Item(Base):
         self.fields = []
         self.timelineItems = []
         self.template = None
+        self.projectId = node.get("projectId")
 
         if node.get("subissues") is not None:
             self.organization = node.get("subissues")
@@ -101,6 +102,12 @@ class Item(Base):
         if node.get(projectItems) is not None:
             for projectItem in node.get(projectItems).get("edges"):
                 # print(projectItem)
+                if self.projectId is not None:
+                    if (
+                        projectItem.get("node").get("project").get("id")
+                        != self.projectId
+                    ):
+                        continue
                 for field in projectItem.get("node").get("fieldValues").get("edges"):
                     node = field.get("node")
                     f = Field(node.get("field"))
