@@ -29,6 +29,11 @@ projectV2Items(first: 100) {
             __typename
             id
             type
+            project {
+                id
+                title
+                number
+            }
             fieldValues(first: 30) {
                 edges {
                     node {
