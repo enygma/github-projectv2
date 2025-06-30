@@ -1,0 +1,12 @@
+... on IssueTypeRemovedEvent {
+    id
+    actor {
+        login
+        __typename
+    }
+    createdAt
+    issueType {
+        id
+        name
+    }
+}

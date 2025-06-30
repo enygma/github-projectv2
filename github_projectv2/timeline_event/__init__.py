@@ -8,6 +8,7 @@ from . import (
     IssueComment,
     IssueTypeAddedEvent,
     IssueTypeChangedEvent,
+    IssueTypeRemovedEvent,
     LabeledEvent,
     MentionedEvent,
     MilestonedEvent,
