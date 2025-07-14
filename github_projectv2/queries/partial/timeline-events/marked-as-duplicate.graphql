@@ -1,0 +1,33 @@
+... on MarkedAsDuplicateEvent {
+    id
+    createdAt
+    canonical {
+        ... on Issue {
+            id
+            title
+            url
+        }
+        ... on PullRequest {
+            id
+            title
+            url
+        }
+    }
+    duplicate {
+        ... on Issue {
+            id
+            title
+            url
+        }
+        ... on PullRequest {    
+            id
+            title
+            url
+        }
+    }
+    actor {
+        login
+        __typename
+    }
+    isCrossRepository
+}

@@ -202,7 +202,13 @@ class Item(Base):
 
         template = self.jinja.get_template("partial/issue_item.graphql")
         item_query = template.render(
-            {"options": {"includeComments": True, "includeTimelineEvents": True}}
+            {
+                "options": {
+                    "includeComments": True,
+                    "includeTimelineEvents": True,
+                    "includeFields": True,
+                }
+            }
         )
 
         template = self.jinja.get_template("partial/repository.graphql")
@@ -263,6 +269,16 @@ class Item(Base):
         self.repository = Repository(
             results.get("data").get("organization").get("repository")
         )
+
+        # And the fields
+        if item.get("projectItems") is not None:
+            for projectItem in item.get("projectItems").get("edges"):
+                for field in projectItem.get("node").get("fieldValues").get("edges"):
+                    node = field.get("node")
+                    f = Field(node.get("field"))
+                    f.load_value(node)
+                    f.updated = node.get("updatedAt")
+                    self.fields.append(f)
 
     def get_timeline(self):
         """Get the timeline data"""

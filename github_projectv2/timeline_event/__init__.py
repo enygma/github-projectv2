@@ -10,6 +10,7 @@ from . import (
     IssueTypeChangedEvent,
     IssueTypeRemovedEvent,
     LabeledEvent,
+    MarkedAsDuplicateEvent,
     MentionedEvent,
     MilestonedEvent,
     MovedColumnsInProjectEvent,
