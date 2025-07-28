@@ -1,3 +1,5 @@
+import json
+
 from github_projectv2 import timeline_event
 from github_projectv2.base import Base
 from github_projectv2.comment import Comment
@@ -41,6 +43,7 @@ class Item(Base):
         self.fields = []
         self.subissues = []
         self.template = None
+        self.databaseId = None
 
         if node is not None:
             self.load(node)
@@ -67,6 +70,7 @@ class Item(Base):
         self.timelineItems = []
         self.template = None
         self.projectId = node.get("projectId")
+        self.databaseId = node.get("databaseId")
 
         if node.get("subissues") is not None:
             self.organization = node.get("subissues")
@@ -337,6 +341,61 @@ class Item(Base):
 
         return timeline
 
+    def get_project_node_id(self, projectId, fieldName):
+        """Get the project node ID for this item"""
+
+        template = self.jinja.get_template("partial/item-project-node-id.graphql")
+        project_node_id_query = template.render(
+            {
+                "org": self.organization.login,
+                "repoName": self.repository.name,
+                "fieldName": fieldName,
+                "projectId": projectId,
+                "issueNumber": self.number,
+            }
+        )
+        # print(project_node_id_query)
+        results = self.run_query(project_node_id_query)
+        # print(results)
+        # json_string = json.dumps(results, indent=4)
+        # print(json_string)
+
+        items = (
+            results.get("data")
+            .get("organization")
+            .get("repository")
+            .get("issue")
+            .get("projectV2")
+            .get("items")
+            .get("edges")
+        )
+        if not items or len(items) == 0:
+            raise Exception("No project items found for field: %s" % fieldName)
+
+        # Find the item that matches the current item's databaseId value
+        nodeId = None
+        for item in items:
+            if item.get("node").get("content").get("databaseId") == self.databaseId:
+                print("Found project item with databaseId: %s" % self.databaseId)
+
+                # If the node ID is not set, raise an exception
+                if item.get("node").get("id") is None:
+                    raise Exception(
+                        "Could not find project node ID for field: %s" % fieldName
+                    )
+                nodeId = item.get("node").get("id")
+                break
+
+        # If the nodeId is not set, raise an exception
+        if nodeId is None:
+            raise Exception("Could not find project node ID for field: %s" % fieldName)
+
+        # Set the projectNodeId
+        self.projectNodeId = nodeId
+
+        # Return the projectNodeId
+        return self.projectNodeId
+
     def update_field_value(self, project, field, input):
         """
         Update the field value
@@ -359,6 +418,11 @@ class Item(Base):
                 value = '{text:"%s"}' % input
             case "NUMBER":
                 value = "{number:%s}" % input
+
+        # If the self.projectNodeId is not set, we need to get it from the project
+        if self.projectNodeId is None:
+            self.get_project_node_id(project.number, field.name)
+            # self.projectNodeId = project.nodeId
 
         query = """
         mutation {

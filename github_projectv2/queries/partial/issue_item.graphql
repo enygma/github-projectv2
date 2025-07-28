@@ -36,6 +36,7 @@ number
 title
 updatedAt
 url
+databaseId
 repository {
     {% include "partial/repository.graphql" %}
 }

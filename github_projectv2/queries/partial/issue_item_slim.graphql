@@ -23,6 +23,7 @@ body
 closed
 closedAt
 createdAt
+databaseId
 labels(first: 100) {
 edges {
     node {

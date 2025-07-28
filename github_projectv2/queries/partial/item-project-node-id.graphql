@@ -1,0 +1,70 @@
+{
+    organization(login: "{{ org }}") {
+        id
+        name
+        login
+        description
+        createdAt
+        location
+        url
+        repository(name: "{{ repoName }}") {
+            issue(number: {{ issueNumber }}) {
+                id
+                __typename
+                body
+                closed
+                closedAt
+                createdAt
+                number
+                title
+                updatedAt
+                url
+                projectV2(number: {{ projectId }}) {
+                    id
+                    title
+                    number
+                    databaseId
+                    items(first: 100) {
+                        edges {
+                            node {
+                                id
+                                type
+                                createdAt
+                                updatedAt
+                                __typename
+                                databaseId
+                                content {
+                                    __typename
+                                    ... on Issue {
+                                        id
+                                        title
+                                        url
+                                        number
+                                        databaseId
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                projectItems(first: 100) {
+                    edges {
+                        node {
+                            __typename
+                            id
+                            project {
+                                id
+                                title
+                                number
+                            }
+                            fieldValueByName(name: "{{ fieldName }}") {
+                                __typename
+                                {% include "partial/fields.graphql" %}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
